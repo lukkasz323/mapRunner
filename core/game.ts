@@ -2,14 +2,14 @@ import { Scene } from "./scene/scene.js";
 import { renderGame } from "./render.js";
 import { updateGame } from "./update.js";
 import { Input } from "./scene/input.js";
-import { busy } from "../utils/utils.js";
 
 export class Game {
-    scene = new Scene();
+    scene: Scene;
     input: Input;
 
     constructor(public canvas: HTMLCanvasElement) {
         this.input = new Input(canvas);
+        this.scene = new Scene(canvas);
     }
 
     run() {
@@ -23,7 +23,7 @@ export class Game {
             let deltaTime = now - lastDate;
             lastDate = now;
 
-            updateGame(scene, input, deltaTime);
+            updateGame(scene, input, canvas, deltaTime);
             renderGame(scene, input, canvas);
 
             requestAnimationFrame(() => gameLoop(scene, canvas, input));

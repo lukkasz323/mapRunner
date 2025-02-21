@@ -1,7 +1,7 @@
 import { Vector2 } from "../../utils/vector2.js";
 
 export class Input {
-    mouseOrigin: Vector2 = {x: 0, y: 0};
+    mouseOrigin: Vector2;
     //worldOrigin: Vector2;
 
     keyW: boolean = false;
@@ -12,6 +12,8 @@ export class Input {
     showFPS: boolean = false;
     
     constructor(private canvas: HTMLCanvasElement) {
+        this.mouseOrigin = {x: this.canvas.width / 2, y: this.canvas.height / 2};
+
         console.log(this);
     }
 

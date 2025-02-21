@@ -1,6 +1,6 @@
 export class Input {
     canvas;
-    mouseOrigin = { x: 0, y: 0 };
+    mouseOrigin;
     //worldOrigin: Vector2;
     keyW = false;
     keyS = false;
@@ -9,6 +9,7 @@ export class Input {
     showFPS = false;
     constructor(canvas) {
         this.canvas = canvas;
+        this.mouseOrigin = { x: this.canvas.width / 2, y: this.canvas.height / 2 };
         console.log(this);
     }
     addEventListeners() {

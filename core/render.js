@@ -38,10 +38,10 @@ function renderGridHexagonal(ctx, scene, canvas) {
     }
 }
 function renderGrid(ctx, scene) {
-    const gridOffset = { x: ctx.canvas.width / 2, y: ctx.canvas.height / 4 };
+    // const gridOffset = {x: ctx.canvas.width / 2, y: ctx.canvas.height / 4};
     const radius = 32;
     for (const tile of scene.grid.tiles) {
-        renderShape(ctx, null, "black", 2, gridOffset.x + tile.origin.x * 64 - tile.origin.y * 64, gridOffset.y + tile.origin.y * 32 + tile.origin.x * 32, radius, 4, 90, 2);
+        renderShape(ctx, null, "black", 2, scene.camera.origin.x + tile.origin.x * 64 - tile.origin.y * 64, scene.camera.origin.y + tile.origin.y * 32 + tile.origin.x * 32, radius, 4, 90, 2);
     }
 }
 function renderShape(ctx, fillColor, strokeColor, lineWidth, x, y, radius, vertices, rotation = 0, scaleX = 1, scaleY = 1) {
