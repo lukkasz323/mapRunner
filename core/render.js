@@ -3,7 +3,7 @@ export function renderGame(scene, input, canvas) {
     const ctx = canvas.getContext("2d");
     renderBackground(ctx, canvas);
     renderDebugGrid(ctx);
-    renderGrid(ctx, scene, canvas);
+    renderGrid(ctx, scene);
     renderDebug(ctx, scene, input);
 }
 function renderDebug(ctx, scene, input) {
@@ -27,7 +27,7 @@ function renderBackground(ctx, canvas) {
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
-function renderGrid(ctx, scene, canvas) {
+function renderGridHexagonal(ctx, scene, canvas) {
     const gridOffset = 128;
     const canvasAvgSize = (canvas.width + canvas.height) / 2;
     const radius = canvasAvgSize / 20;
@@ -37,6 +37,13 @@ function renderGrid(ctx, scene, canvas) {
         renderShape(ctx, "red", "black", 2, gridOffset + (1 * tile.origin.x) * radius * 2 + offsetX, gridOffset + (1 * tile.origin.y) * radius * 2 + offsetY, radius, 6, 90, 1.15);
     }
 }
+function renderGrid(ctx, scene) {
+    const gridOffset = { x: ctx.canvas.width / 2, y: ctx.canvas.height / 4 };
+    const radius = 32;
+    for (const tile of scene.grid.tiles) {
+        renderShape(ctx, null, "black", 2, gridOffset.x + tile.origin.x * 64 - tile.origin.y * 64, gridOffset.y + tile.origin.y * 32 + tile.origin.x * 32, radius, 4, 90, 2);
+    }
+}
 function renderShape(ctx, fillColor, strokeColor, lineWidth, x, y, radius, vertices, rotation = 0, scaleX = 1, scaleY = 1) {
     ctx.beginPath();
     const angle = Math.PI * 2 / vertices;
@@ -44,9 +51,13 @@ function renderShape(ctx, fillColor, strokeColor, lineWidth, x, y, radius, verti
     for (let i = 0; i <= vertices; i++) {
         ctx.lineTo(x + radius * Math.cos((i * angle) + rotationRadians) * scaleX, y + radius * Math.sin((i * angle) + rotationRadians) * scaleY);
     }
-    ctx.fillStyle = fillColor;
-    ctx.fill();
-    ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = strokeColor;
-    ctx.stroke();
+    if (fillColor) {
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+    }
+    if (strokeColor) {
+        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle = strokeColor;
+        ctx.stroke();
+    }
 }

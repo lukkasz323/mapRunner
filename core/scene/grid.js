@@ -3,7 +3,7 @@ export class Grid {
     width;
     height;
     tiles = [];
-    constructor(width = 7, height = 9) {
+    constructor(width = 5, height = 5) {
         this.width = width;
         this.height = height;
         // Tiles
