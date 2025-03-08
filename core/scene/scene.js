@@ -6,7 +6,7 @@ export class Scene {
     fpsCounter = new FPSCounter();
     ticks = 0;
     camera;
-    grid = new Grid();
+    grid = new Grid(this);
     constructor(canvas) {
         this.canvas = canvas;
         this.camera = new Camera(canvas);

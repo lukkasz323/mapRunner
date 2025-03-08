@@ -7,9 +7,16 @@ export function renderGame(scene, input, canvas) {
     renderDebug(ctx, scene, input);
 }
 function renderDebug(ctx, scene, input) {
+    // Mouse coordinates
     ctx.fillStyle = "black";
     ctx.fillText(input.mouseOrigin.x.toString(), 32, 32);
     ctx.fillText(input.mouseOrigin.y.toString(), 32, 64);
+    // Projected tile origin coordinates 
+    // for (const tile of scene.grid.tiles) {
+    //     ctx.fillStyle = "red";
+    //     const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
+    //     ctx.fillRect(origin.x, origin.y, 4, 4);
+    // }
 }
 function renderDebugGrid(ctx) {
     ctx.strokeStyle = "blue";
@@ -17,8 +24,8 @@ function renderDebugGrid(ctx) {
     const tileSize = 64;
     const tileWidth = tileSize;
     const tileHeight = tileSize;
-    for (let y = 0; y < 10; y++) {
-        for (let x = 0; x < 10; x++) {
+    for (let y = 0; y < ctx.canvas.height / tileSize; y++) {
+        for (let x = 0; x < ctx.canvas.width / tileSize; x++) {
             ctx.strokeRect(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
         }
     }
@@ -38,10 +45,16 @@ function renderGridHexagonal(ctx, scene, canvas) {
     }
 }
 function renderGrid(ctx, scene) {
-    // const gridOffset = {x: ctx.canvas.width / 2, y: ctx.canvas.height / 4};
-    const radius = 32;
     for (const tile of scene.grid.tiles) {
-        renderShape(ctx, null, "black", 2, scene.camera.origin.x + tile.origin.x * 64 - tile.origin.y * 64, scene.camera.origin.y + tile.origin.y * 32 + tile.origin.x * 32, radius, 4, 90, 2);
+        let strokeColor = "black";
+        if (tile === scene.grid.hoveredTile) {
+            strokeColor = "blue";
+        }
+        const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
+        renderShape(ctx, null, strokeColor, 2, origin.x, origin.y, 
+        // scene.camera.origin.x*0 + (tile.origin.x * scene.grid.tileSize * scene.grid.tileScale.x - tile.origin.y * scene.grid.tileSize * scene.grid.tileScale.x),
+        // scene.camera.origin.y*0 + (tile.origin.y * scene.grid.tileSize * scene.grid.tileScale.y + tile.origin.x * scene.grid.tileSize * scene.grid.tileScale.y), 
+        scene.grid.tileSize, 4, 90, scene.grid.tileScale.x, scene.grid.tileScale.y);
     }
 }
 function renderShape(ctx, fillColor, strokeColor, lineWidth, x, y, radius, vertices, rotation = 0, scaleX = 1, scaleY = 1) {

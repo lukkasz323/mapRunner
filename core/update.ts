@@ -21,5 +21,8 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
         scene.camera.origin.y -= scene.camera.speed;
     }
 
+    // Find hovered tile
+    scene.grid.checkHoveredTile(input);
+    
     scene.ticks++;
 }

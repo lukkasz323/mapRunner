@@ -7,8 +7,12 @@ export function sumVector2(a: Vector2, b: Vector2): Vector2 {
     return {x: a.x + b.x, y: a.y + b.y}
 }
 
-export function distanceVector2(a: Vector2, b: Vector2): Vector2 {
+export function differenceVector2(a: Vector2, b: Vector2): Vector2 {
     return {x: b.x - a.x, y: b.y - a.y}
+}
+
+export function distanceVector2(a: Vector2, b: Vector2): number {
+    return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
 }
 
 export function normVector2(v: Vector2): number {
@@ -24,5 +28,5 @@ export function normalizeVector2(v: Vector2): Vector2 {
 }
 
 export function directionVector2(a: Vector2, b: Vector2): Vector2 {
-    return normalizeVector2(distanceVector2(a, b));
+    return normalizeVector2(differenceVector2(a, b));
 }
