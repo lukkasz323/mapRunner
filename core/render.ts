@@ -1,6 +1,7 @@
 import { degreesToRadians } from "../utils/utils.js";
 import { Input } from "./scene/input.js";
 import { Scene } from "./scene/scene.js";
+import { Tile } from "./scene/tile.js";
 
 export function renderGame(scene: Scene, input: Input, canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext("2d");
@@ -68,20 +69,27 @@ function renderGridHexagonal(ctx: CanvasRenderingContext2D, scene: Scene, canvas
 }
 
 function renderGrid(ctx: CanvasRenderingContext2D, scene: Scene) {
-
+    let strokeColor = "black";
     for (const tile of scene.grid.tiles) {
-        let strokeColor = "black";
-        if (tile === scene.grid.hoveredTile) {
-            strokeColor = "blue";
+        if (tile !== scene.grid.hoveredTile) {
+            renderGridTile(ctx, scene, tile, strokeColor);
         }
-        const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
+    }
+    // Outside of the for loop to render last 
+    if (scene.grid.hoveredTile) {
+        strokeColor = "blue";
+        renderGridTile(ctx, scene, scene.grid.hoveredTile, strokeColor)
+    }
+}
+
+function renderGridTile(ctx: CanvasRenderingContext2D, scene: Scene, tile: Tile, strokeColor: string) {
+    const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
         renderShape(ctx, null, strokeColor, 2, 
             origin.x,
             origin.y,
             // scene.camera.origin.x*0 + (tile.origin.x * scene.grid.tileSize * scene.grid.tileScale.x - tile.origin.y * scene.grid.tileSize * scene.grid.tileScale.x),
             // scene.camera.origin.y*0 + (tile.origin.y * scene.grid.tileSize * scene.grid.tileScale.y + tile.origin.x * scene.grid.tileSize * scene.grid.tileScale.y), 
             scene.grid.tileSize, 4, 90, scene.grid.tileScale.x, scene.grid.tileScale.y);
-    }
 }
 
 function renderShape(ctx: CanvasRenderingContext2D, fillColor: string, strokeColor: string, lineWidth: number, x: number, y: number, radius: number, vertices: number, rotation: number = 0, scaleX: number = 1, scaleY: number = 1) {

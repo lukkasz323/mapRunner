@@ -45,17 +45,24 @@ function renderGridHexagonal(ctx, scene, canvas) {
     }
 }
 function renderGrid(ctx, scene) {
+    let strokeColor = "black";
     for (const tile of scene.grid.tiles) {
-        let strokeColor = "black";
-        if (tile === scene.grid.hoveredTile) {
-            strokeColor = "blue";
+        if (tile !== scene.grid.hoveredTile) {
+            renderGridTile(ctx, scene, tile, strokeColor);
         }
-        const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
-        renderShape(ctx, null, strokeColor, 2, origin.x, origin.y, 
-        // scene.camera.origin.x*0 + (tile.origin.x * scene.grid.tileSize * scene.grid.tileScale.x - tile.origin.y * scene.grid.tileSize * scene.grid.tileScale.x),
-        // scene.camera.origin.y*0 + (tile.origin.y * scene.grid.tileSize * scene.grid.tileScale.y + tile.origin.x * scene.grid.tileSize * scene.grid.tileScale.y), 
-        scene.grid.tileSize, 4, 90, scene.grid.tileScale.x, scene.grid.tileScale.y);
     }
+    // Outside of the for loop to render last 
+    if (scene.grid.hoveredTile) {
+        strokeColor = "blue";
+        renderGridTile(ctx, scene, scene.grid.hoveredTile, strokeColor);
+    }
+}
+function renderGridTile(ctx, scene, tile, strokeColor) {
+    const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
+    renderShape(ctx, null, strokeColor, 2, origin.x, origin.y, 
+    // scene.camera.origin.x*0 + (tile.origin.x * scene.grid.tileSize * scene.grid.tileScale.x - tile.origin.y * scene.grid.tileSize * scene.grid.tileScale.x),
+    // scene.camera.origin.y*0 + (tile.origin.y * scene.grid.tileSize * scene.grid.tileScale.y + tile.origin.x * scene.grid.tileSize * scene.grid.tileScale.y), 
+    scene.grid.tileSize, 4, 90, scene.grid.tileScale.x, scene.grid.tileScale.y);
 }
 function renderShape(ctx, fillColor, strokeColor, lineWidth, x, y, radius, vertices, rotation = 0, scaleX = 1, scaleY = 1) {
     ctx.beginPath();
