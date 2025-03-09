@@ -1,4 +1,4 @@
-import { distanceVector2 } from "../../utils/vector2.js";
+import { distanceEllipseVector2 } from "../../utils/vector2.js";
 import { Tile } from "./tile.js";
 export class Grid {
     scene;
@@ -21,19 +21,17 @@ export class Grid {
         }
         console.log(this.tiles);
     }
-    checkHoveredTile(input) {
-        this.hoveredTile = this.#findClosestTile(input, this.scene);
-    }
-    #findClosestTile(input, scene) {
+    updateHoveredTile(input, scene) {
         let closestTile;
-        let lowestDistance = this.tileSize * Math.max(this.tileScale.x, this.tileScale.y);
+        let lowestDistance = this.tileSize * Math.max(this.tileScale.x, this.tileScale.y) + 1; // + 1 to avoid edge cases
         for (const tile of this.tiles) {
-            const distance = distanceVector2(tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), input.mouseOrigin);
+            // const distance = distanceVector2(tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), input.mouseOrigin); // Simple
+            const distance = distanceEllipseVector2(tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), input.mouseOrigin, 1, 4); // Experimental (scale2 x4)
             if (distance < lowestDistance) {
                 lowestDistance = distance;
                 closestTile = tile;
             }
         }
-        return closestTile;
+        this.hoveredTile = closestTile;
     }
 }

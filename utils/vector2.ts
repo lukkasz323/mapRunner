@@ -12,7 +12,11 @@ export function differenceVector2(a: Vector2, b: Vector2): Vector2 {
 }
 
 export function distanceVector2(a: Vector2, b: Vector2): number {
-    return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
+    return Math.sqrt(((a.x - b.x) ** 2) + ((a.y - b.y) ** 2));
+}
+
+export function distanceEllipseVector2(a: Vector2, b: Vector2, scale1: number, scale2): number {
+    return Math.sqrt(((a.x - b.x) ** 2  * scale1) + ((a.y - b.y) ** 2 * scale2));
 }
 
 export function normVector2(v: Vector2): number {

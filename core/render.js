@@ -1,4 +1,5 @@
 import { degreesToRadians } from "../utils/utils.js";
+import { distanceEllipseVector2 } from "../utils/vector2.js";
 export function renderGame(scene, input, canvas) {
     const ctx = canvas.getContext("2d");
     renderBackground(ctx, canvas);
@@ -12,11 +13,21 @@ function renderDebug(ctx, scene, input) {
     ctx.fillText(input.mouseOrigin.x.toString(), 32, 32);
     ctx.fillText(input.mouseOrigin.y.toString(), 32, 64);
     // Projected tile origin coordinates 
-    // for (const tile of scene.grid.tiles) {
-    //     ctx.fillStyle = "red";
-    //     const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
-    //     ctx.fillRect(origin.x, origin.y, 4, 4);
-    // }
+    for (const tile of scene.grid.tiles) {
+        ctx.fillStyle = "red";
+        const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
+        ctx.fillRect(origin.x, origin.y, 4, 4);
+        // Hovered tile ellipse radius visualization
+        // const r = distanceEllipseVector2(tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), input.mouseOrigin, 1, 1);
+        // if (r < scene.grid.tileSize * 2) {
+        //     renderShape(ctx, tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), r, 16, "green");
+        // }
+    }
+    // Hovered tile ellipse radius visualization
+    const tile = scene.grid.hoveredTile;
+    if (tile) {
+        renderShape(ctx, tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), distanceEllipseVector2(tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), input.mouseOrigin, 1, 1), 16, "green");
+    }
 }
 function renderDebugGrid(ctx) {
     ctx.strokeStyle = "blue";
@@ -34,16 +45,6 @@ function renderBackground(ctx, canvas) {
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
-function renderGridHexagonal(ctx, scene, canvas) {
-    const gridOffset = 128;
-    const canvasAvgSize = (canvas.width + canvas.height) / 2;
-    const radius = canvasAvgSize / 20;
-    for (const tile of scene.grid.tiles) {
-        const offsetX = tile.origin.y % 2 === 1 ? radius : 0;
-        const offsetY = tile.origin.y * -(radius / 2);
-        renderShape(ctx, "red", "black", 2, gridOffset + (1 * tile.origin.x) * radius * 2 + offsetX, gridOffset + (1 * tile.origin.y) * radius * 2 + offsetY, radius, 6, 90, 1.15);
-    }
-}
 function renderGrid(ctx, scene) {
     let strokeColor = "black";
     for (const tile of scene.grid.tiles) {
@@ -51,7 +52,7 @@ function renderGrid(ctx, scene) {
             renderGridTile(ctx, scene, tile, strokeColor);
         }
     }
-    // Outside of the for loop to render last 
+    // This is placed after the for loop to render last.
     if (scene.grid.hoveredTile) {
         strokeColor = "blue";
         renderGridTile(ctx, scene, scene.grid.hoveredTile, strokeColor);
@@ -59,25 +60,22 @@ function renderGrid(ctx, scene) {
 }
 function renderGridTile(ctx, scene, tile, strokeColor) {
     const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
-    renderShape(ctx, null, strokeColor, 2, origin.x, origin.y, 
-    // scene.camera.origin.x*0 + (tile.origin.x * scene.grid.tileSize * scene.grid.tileScale.x - tile.origin.y * scene.grid.tileSize * scene.grid.tileScale.x),
-    // scene.camera.origin.y*0 + (tile.origin.y * scene.grid.tileSize * scene.grid.tileScale.y + tile.origin.x * scene.grid.tileSize * scene.grid.tileScale.y), 
-    scene.grid.tileSize, 4, 90, scene.grid.tileScale.x, scene.grid.tileScale.y);
+    renderShape(ctx, origin, scene.grid.tileSize, 4, strokeColor, null, 2, scene.grid.tileScale.x, scene.grid.tileScale.y, 90);
 }
-function renderShape(ctx, fillColor, strokeColor, lineWidth, x, y, radius, vertices, rotation = 0, scaleX = 1, scaleY = 1) {
+function renderShape(ctx, origin, radius, vertices, strokeColor = null, fillColor = null, lineWidth = 2, scaleX = 1, scaleY = 1, rotation = 0) {
     ctx.beginPath();
     const angle = Math.PI * 2 / vertices;
     const rotationRadians = degreesToRadians(rotation);
     for (let i = 0; i <= vertices; i++) {
-        ctx.lineTo(x + radius * Math.cos((i * angle) + rotationRadians) * scaleX, y + radius * Math.sin((i * angle) + rotationRadians) * scaleY);
-    }
-    if (fillColor) {
-        ctx.fillStyle = fillColor;
-        ctx.fill();
+        ctx.lineTo(origin.x + radius * Math.cos((i * angle) + rotationRadians) * scaleX, origin.y + radius * Math.sin((i * angle) + rotationRadians) * scaleY);
     }
     if (strokeColor) {
         ctx.lineWidth = lineWidth;
         ctx.strokeStyle = strokeColor;
         ctx.stroke();
+    }
+    if (fillColor) {
+        ctx.fillStyle = fillColor;
+        ctx.fill();
     }
 }

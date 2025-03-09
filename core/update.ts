@@ -22,7 +22,7 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
     }
 
     // Find hovered tile
-    scene.grid.checkHoveredTile(input);
+    scene.grid.updateHoveredTile(input, scene);
     
     scene.ticks++;
 }
