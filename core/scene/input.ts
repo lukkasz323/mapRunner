@@ -4,12 +4,7 @@ export class Input {
     mouseOrigin: Vector2;
     //worldOrigin: Vector2;
 
-    keyW: boolean = false;
-    keyS: boolean = false;
-    keyA: boolean = false;
-    keyD: boolean = false;
-
-    showFPS: boolean = false;
+    keys = new Map<string, boolean>();
     
     constructor(private canvas: HTMLCanvasElement) {
         this.mouseOrigin = {x: this.canvas.width / 2, y: this.canvas.height / 2};
@@ -43,39 +38,10 @@ export class Input {
     }
 
     #onKeyDown(e: KeyboardEvent) {
-        switch (e.code) {
-            case "KeyW":
-                this.keyW = true;
-                break;
-            case "KeyS":
-                this.keyS = true;
-                break;
-            case "KeyA":
-                this.keyA = true;
-                break;
-            case "KeyD":
-                this.keyD = true;
-                break;
-            case "Backquote":
-                this.showFPS = !this.showFPS;
-                break;
-        }
+        this.keys[e.code] = true;
     }
 
     #onKeyUp(e: KeyboardEvent) {
-        switch (e.code) {
-            case "KeyW":
-                this.keyW = false;
-                break;
-            case "KeyS":
-                this.keyS = false;
-                break;
-            case "KeyA":
-                this.keyA = false;
-                break;
-            case "KeyD":
-                this.keyD = false;
-                break;
-        }
+        this.keys[e.code] = false;
     }
 }

@@ -2,7 +2,7 @@ import { Input } from "./scene/input.js";
 import { Scene } from "./scene/scene.js";
 
 export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement, deltaTime: number) {
-    if (input.showFPS) {
+    if (input.keys.get("Backquote")) {
         scene.fpsCounter.update(deltaTime);
         console.log(scene.fpsCounter.calculateAverage());
     }

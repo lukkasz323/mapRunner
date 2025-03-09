@@ -1,5 +1,5 @@
 export function updateGame(scene, input, canvas, deltaTime) {
-    if (input.showFPS) {
+    if (input.keys.get("Backquote")) {
         scene.fpsCounter.update(deltaTime);
         console.log(scene.fpsCounter.calculateAverage());
     }
