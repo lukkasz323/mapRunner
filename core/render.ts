@@ -16,15 +16,15 @@ export function renderGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
 function renderDebug(ctx: CanvasRenderingContext2D, scene: Scene, input: Input) {
     // Mouse coordinates
     ctx.fillStyle = "black";
-    ctx.fillText(input.mouseOrigin.x.toString(), 32, 32);
-    ctx.fillText(input.mouseOrigin.y.toString(), 32, 64);
+    ctx.fillText(input.mouseOrigin.x.toString(), 20, 20);
+    ctx.fillText(input.mouseOrigin.y.toString(), 20, 40);
 
     // Hovered tile coordinates
     const tile = scene.grid.hoveredTile;
     if (tile) {
         ctx.fillStyle = "blue";
-        ctx.fillText(tile.origin.x.toString(), 64, 32);
-        ctx.fillText(tile.origin.y.toString(), 64, 64);
+        ctx.fillText(tile.origin.x.toString(), 80, 20);
+        ctx.fillText(tile.origin.y.toString(), 80, 40);
     }
 
     // Projected tile origins
