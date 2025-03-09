@@ -19,24 +19,32 @@ function renderDebug(ctx: CanvasRenderingContext2D, scene: Scene, input: Input) 
     ctx.fillText(input.mouseOrigin.x.toString(), 32, 32);
     ctx.fillText(input.mouseOrigin.y.toString(), 32, 64);
 
-    // Projected tile origin coordinates 
-    for (const tile of scene.grid.tiles) {
-        ctx.fillStyle = "red";
-        const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
-        ctx.fillRect(origin.x, origin.y, 4, 4);
-
-        // Hovered tile ellipse radius visualization
-        // const r = distanceEllipseVector2(tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), input.mouseOrigin, 1, 1);
-        // if (r < scene.grid.tileSize * 2) {
-        //     renderShape(ctx, tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), r, 16, "green");
-        // }
-    }
-
-    // Hovered tile ellipse radius visualization
+    // Hovered tile coordinates
     const tile = scene.grid.hoveredTile;
     if (tile) {
-        renderShape(ctx, tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), distanceEllipseVector2(tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), input.mouseOrigin, 1, 1), 16, "green");
+        ctx.fillStyle = "blue";
+        ctx.fillText(tile.origin.x.toString(), 64, 32);
+        ctx.fillText(tile.origin.y.toString(), 64, 64);
     }
+
+    // Projected tile origins
+    // for (const tile of scene.grid.tiles) {
+    //     ctx.fillStyle = "red";
+    //     const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
+    //     ctx.fillRect(origin.x, origin.y, 4, 4);
+
+    //     // Hovered tile ellipse radius visualization
+    //     // const r = distanceEllipseVector2(tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), input.mouseOrigin, 1, 1);
+    //     // if (r < scene.grid.tileSize * 2) {
+    //     //     renderShape(ctx, tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), r, 16, "green");
+    //     // }
+    // }
+
+    // Hovered tile ellipse radius visualization
+    // const tile = scene.grid.hoveredTile;
+    // if (tile) {
+    //     renderShape(ctx, tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), distanceEllipseVector2(tile.getOriginAsIsometricScaledAndOffsetByCamera(scene), input.mouseOrigin, 1, 1), 16, "green");
+    // }
 }
 
 function renderDebugGrid(ctx: CanvasRenderingContext2D) {
