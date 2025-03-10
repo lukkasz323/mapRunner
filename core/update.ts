@@ -8,16 +8,16 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
     }
 
     // Move camera
-    if (input.mouseOrigin.x < 32) {
+    if (input.keys.get("KeyA") || input.mouseOrigin.x < 32) {
         scene.camera.origin.x += scene.camera.speed;
     }
-    if (input.mouseOrigin.y < 32) {
+    if (input.keys.get("KeyW") || input.mouseOrigin.y < 32) {
         scene.camera.origin.y += scene.camera.speed;
     }
-    if (input.mouseOrigin.x > canvas.width - 32) {
+    if (input.keys.get("KeyD") || input.mouseOrigin.x > canvas.width - 32) {
         scene.camera.origin.x -= scene.camera.speed;
     }
-    if (input.mouseOrigin.y > canvas.height - 32) {
+    if (input.keys.get("KeyS") || input.mouseOrigin.y > canvas.height - 32) {
         scene.camera.origin.y -= scene.camera.speed;
     }
 

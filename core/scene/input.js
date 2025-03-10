@@ -28,9 +28,9 @@ export class Input {
     #onMouseUp(e) {
     }
     #onKeyDown(e) {
-        this.keys[e.code] = true;
+        this.keys.set(e.code, true);
     }
     #onKeyUp(e) {
-        this.keys[e.code] = false;
+        this.keys.set(e.code, false);
     }
 }

@@ -38,10 +38,10 @@ export class Input {
     }
 
     #onKeyDown(e: KeyboardEvent) {
-        this.keys[e.code] = true;
+        this.keys.set(e.code, true);
     }
 
     #onKeyUp(e: KeyboardEvent) {
-        this.keys[e.code] = false;
+        this.keys.set(e.code, false);
     }
 }
