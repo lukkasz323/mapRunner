@@ -4,6 +4,7 @@ export class Input {
     mouseOrigin: Vector2;
     //worldOrigin: Vector2;
 
+    isMouseDown = false;
     keys = new Map<string, boolean>();
     
     constructor(private canvas: HTMLCanvasElement) {
@@ -32,9 +33,11 @@ export class Input {
     }
 
     #onMouseDown(e: PointerEvent) {
+        this.isMouseDown = true;
     }
 
     #onMouseUp(e: PointerEvent) {
+        this.isMouseDown = false;
     }
 
     #onKeyDown(e: KeyboardEvent) {

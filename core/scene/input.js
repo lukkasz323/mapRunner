@@ -2,6 +2,7 @@ export class Input {
     canvas;
     mouseOrigin;
     //worldOrigin: Vector2;
+    isMouseDown = false;
     keys = new Map();
     constructor(canvas) {
         this.canvas = canvas;
@@ -24,8 +25,10 @@ export class Input {
         // this.worldOrigin = {x: this.screenOrigin.x + this.scene.camera.origin.x, y: this.screenOrigin.y + this.scene.camera.origin.y};
     }
     #onMouseDown(e) {
+        this.isMouseDown = true;
     }
     #onMouseUp(e) {
+        this.isMouseDown = false;
     }
     #onKeyDown(e) {
         this.keys.set(e.code, true);

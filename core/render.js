@@ -2,8 +2,9 @@ import { degreesToRadians } from "../utils/utils.js";
 export function renderGame(scene, input, canvas) {
     const ctx = canvas.getContext("2d");
     renderBackground(ctx, canvas);
-    renderDebugGrid(ctx);
+    // renderDebugGrid(ctx);
     renderGrid(ctx, scene);
+    renderHud(ctx, scene);
     renderDebug(ctx, scene, input);
 }
 function renderDebug(ctx, scene, input) {
@@ -55,18 +56,18 @@ function renderGrid(ctx, scene) {
     let strokeColor = "black";
     for (const tile of scene.grid.tiles) {
         if (tile !== scene.grid.hoveredTile) {
-            renderGridTile(ctx, scene, tile, strokeColor);
+            renderGridTile(ctx, scene, tile, strokeColor, tile.color);
         }
     }
     // This is placed after the for loop to render last.
     if (scene.grid.hoveredTile) {
         strokeColor = "blue";
-        renderGridTile(ctx, scene, scene.grid.hoveredTile, strokeColor);
+        renderGridTile(ctx, scene, scene.grid.hoveredTile, strokeColor, scene.grid.hoveredTile.color);
     }
 }
-function renderGridTile(ctx, scene, tile, strokeColor) {
+function renderGridTile(ctx, scene, tile, strokeColor, fillColor) {
     const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
-    renderShape(ctx, origin, scene.grid.tileSize, 4, strokeColor, null, 2, scene.grid.tileScale.x, scene.grid.tileScale.y, 90);
+    renderShape(ctx, origin, scene.grid.tileSize, 4, strokeColor, fillColor, 1, scene.grid.tileScale.x, scene.grid.tileScale.y, 90);
 }
 function renderShape(ctx, origin, radius, vertices, strokeColor = null, fillColor = null, lineWidth = 2, scaleX = 1, scaleY = 1, rotation = 0) {
     ctx.beginPath();
@@ -75,13 +76,37 @@ function renderShape(ctx, origin, radius, vertices, strokeColor = null, fillColo
     for (let i = 0; i <= vertices; i++) {
         ctx.lineTo(origin.x + radius * Math.cos((i * angle) + rotationRadians) * scaleX, origin.y + radius * Math.sin((i * angle) + rotationRadians) * scaleY);
     }
+    if (fillColor) {
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+    }
     if (strokeColor) {
         ctx.lineWidth = lineWidth;
         ctx.strokeStyle = strokeColor;
         ctx.stroke();
     }
+}
+function renderRect(ctx, fillColor = null, strokeColor = null, x = 32, y = 32, w = 32, h = 32, lineWidth = 2) {
     if (fillColor) {
         ctx.fillStyle = fillColor;
-        ctx.fill();
+        ctx.fillRect(x, y, w, h);
+    }
+    if (strokeColor) {
+        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle = strokeColor;
+        ctx.strokeRect(x, y, w, h);
+    }
+}
+function renderHud(ctx, scene) {
+    // Tooltip
+    if (scene.grid.hoveredTile) {
+        const totalHeight = 64;
+        const margin = 1;
+        renderRect(ctx, "gray", "black", margin, ctx.canvas.height - totalHeight, ctx.canvas.width - (margin * 2), totalHeight - margin, 2);
+        scene.grid.selectedTile = scene.grid.hoveredTile;
+        if (scene.grid.selectedTile) {
+            ctx.lineWidth = 2;
+            renderRect(ctx, scene.grid.selectedTile.color, "black", margin + (totalHeight / 8), ctx.canvas.height - (totalHeight / 1.09), totalHeight / 1.2, totalHeight / 1.2);
+        }
     }
 }

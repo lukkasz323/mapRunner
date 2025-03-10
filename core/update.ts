@@ -27,6 +27,11 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
 
     // Find hovered tile
     scene.grid.updateHoveredTile(input, scene);
+
+    // Tile select
+    if (input.isMouseDown && scene.grid.hoveredTile) {
+        scene.grid.selectedTile = scene.grid.hoveredTile;
+    }
     
     scene.ticks++;
 }

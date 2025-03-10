@@ -16,7 +16,7 @@ export class Grid {
         // Tiles
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                this.tiles.push(new Tile({ x: x, y: y }));
+                this.tiles.push(new Tile({ x: x, y: y }, "green"));
             }
         }
         console.log(this.tiles);

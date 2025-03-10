@@ -1,9 +1,9 @@
 import { Vector2 } from "../../utils/vector2";
-import { Camera } from "./camera";
+import { Biome } from "./biome";
 import { Scene } from "./scene";
 
 export class Tile {
-    constructor(public origin: Vector2, public color: string = "gray") {
+    constructor(public origin: Vector2, public color: string = null, public biome: Biome = Biome.Plains) {
     }
 
     getOriginAsIsometric(): Vector2 {

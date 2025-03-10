@@ -8,8 +8,9 @@ export function renderGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
     const ctx = canvas.getContext("2d");
 
     renderBackground(ctx, canvas);
-    renderDebugGrid(ctx);
+    // renderDebugGrid(ctx);
     renderGrid(ctx, scene);
+    renderHud(ctx, scene);
     renderDebug(ctx, scene, input);
 }
 
@@ -69,19 +70,19 @@ function renderGrid(ctx: CanvasRenderingContext2D, scene: Scene) {
     let strokeColor = "black";
     for (const tile of scene.grid.tiles) {
         if (tile !== scene.grid.hoveredTile) {
-            renderGridTile(ctx, scene, tile, strokeColor);
+            renderGridTile(ctx, scene, tile, strokeColor, tile.color);
         }
     }
     // This is placed after the for loop to render last.
     if (scene.grid.hoveredTile) {
         strokeColor = "blue";
-        renderGridTile(ctx, scene, scene.grid.hoveredTile, strokeColor)
+        renderGridTile(ctx, scene, scene.grid.hoveredTile, strokeColor, scene.grid.hoveredTile.color);
     }
 }
 
-function renderGridTile(ctx: CanvasRenderingContext2D, scene: Scene, tile: Tile, strokeColor: string) {
+function renderGridTile(ctx: CanvasRenderingContext2D, scene: Scene, tile: Tile, strokeColor: string, fillColor: string) {
     const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
-        renderShape(ctx, origin, scene.grid.tileSize, 4, strokeColor, null, 2, scene.grid.tileScale.x, scene.grid.tileScale.y, 90);
+        renderShape(ctx, origin, scene.grid.tileSize, 4, strokeColor, fillColor, 1, scene.grid.tileScale.x, scene.grid.tileScale.y, 90);
 }
 
 function renderShape(ctx: CanvasRenderingContext2D, origin: Vector2, radius: number, vertices: number, strokeColor: string = null, fillColor: string = null, lineWidth: number = 2, scaleX: number = 1, scaleY: number = 1, rotation: number = 0) {
@@ -94,13 +95,40 @@ function renderShape(ctx: CanvasRenderingContext2D, origin: Vector2, radius: num
             origin.y + radius * Math.sin((i * angle) + rotationRadians) * scaleY
         );
     }
+    if (fillColor) {
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+    }
     if (strokeColor) {
         ctx.lineWidth = lineWidth;
         ctx.strokeStyle = strokeColor;
         ctx.stroke();
     }
+}
+
+function renderRect(ctx: CanvasRenderingContext2D, fillColor: string = null, strokeColor: string = null, x: number = 32, y: number = 32, w: number = 32, h: number = 32, lineWidth: number = 2) {
     if (fillColor) {
         ctx.fillStyle = fillColor;
-        ctx.fill();
+        ctx.fillRect(x, y, w, h);
+    }
+    if (strokeColor) {
+        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle = strokeColor;
+        ctx.strokeRect(x, y, w, h);
+    }
+}
+
+function renderHud(ctx: CanvasRenderingContext2D, scene: Scene) {
+    // Tooltip
+    if (scene.grid.hoveredTile) {
+        const totalHeight = 64;
+        const margin = 1;
+        renderRect(ctx, "gray", "black", margin, ctx.canvas.height - totalHeight, ctx.canvas.width - (margin * 2), totalHeight - margin, 2);
+        
+        scene.grid.selectedTile = scene.grid.hoveredTile;
+        if (scene.grid.selectedTile) {
+            ctx.lineWidth = 2;
+            renderRect(ctx, scene.grid.selectedTile.color, "black", margin + (totalHeight / 8), ctx.canvas.height - (totalHeight / 1.09), totalHeight / 1.2, totalHeight / 1.2);
+        }
     }
 }
