@@ -1,5 +1,7 @@
 import { degreesToRadians } from "../utils/utils.js";
-import { differenceVector2, distanceEllipseVector2, sumVector2, Vector2 } from "../utils/vector2.js";
+import { Vector2 } from "../utils/vector2.js";
+import { FONT } from "./constants.js";
+import { BIOMES } from "./scene/biomes.js";
 import { Input } from "./scene/input.js";
 import { Scene } from "./scene/scene.js";
 import { Tile } from "./scene/tile.js";
@@ -15,6 +17,7 @@ export function renderGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
 }
 
 function renderDebug(ctx: CanvasRenderingContext2D, scene: Scene, input: Input) {
+    ctx.font = `16px ${FONT}`;
     // Mouse coordinates
     ctx.fillStyle = "black";
     ctx.fillText(input.mouseOrigin.x.toString(), 20, 20);
@@ -67,22 +70,40 @@ function renderBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasEleme
 }
 
 function renderGrid(ctx: CanvasRenderingContext2D, scene: Scene) {
+    // let strokeColor = "black";
+    // for (const tile of scene.grid.tiles) {
+    //     if (tile !== scene.grid.selectedTile || tile !== scene.grid.hoveredTile) {
+    //         renderGridTile(ctx, scene, tile, strokeColor, BIOMES[tile.biome].color);
+    //     }
+    // }
+    // // This is placed after the for loop to render last.
+    // if (scene.grid.selectedTile) {
+    //     strokeColor = "cyan";
+    //     renderGridTile(ctx, scene, scene.grid.selectedTile, strokeColor, BIOMES[scene.grid.selectedTile.biome].color);
+    // }
+    // if (scene.grid.hoveredTile && scene.grid.hoveredTile !== scene.grid.selectedTile) {
+    //     strokeColor = "blue";
+    //     renderGridTile(ctx, scene, scene.grid.hoveredTile, strokeColor, BIOMES[scene.grid.hoveredTile.biome].color);
+    // }
     let strokeColor = "black";
     for (const tile of scene.grid.tiles) {
-        if (tile !== scene.grid.hoveredTile) {
-            renderGridTile(ctx, scene, tile, strokeColor, tile.color);
-        }
+        renderGridTile(ctx, scene, tile, strokeColor, BIOMES[tile.biome].color);
     }
     // This is placed after the for loop to render last.
     if (scene.grid.hoveredTile) {
         strokeColor = "blue";
-        renderGridTile(ctx, scene, scene.grid.hoveredTile, strokeColor, scene.grid.hoveredTile.color);
+        renderGridTile(ctx, scene, scene.grid.hoveredTile, strokeColor, null, 2);
     }
+    if (scene.grid.selectedTile) {
+        strokeColor = "cyan";
+        renderGridTile(ctx, scene, scene.grid.selectedTile, strokeColor, null, 2);
+    }
+    
 }
 
-function renderGridTile(ctx: CanvasRenderingContext2D, scene: Scene, tile: Tile, strokeColor: string, fillColor: string) {
+function renderGridTile(ctx: CanvasRenderingContext2D, scene: Scene, tile: Tile, strokeColor: string, fillColor: string, lineWidth: number = 1) {
     const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
-        renderShape(ctx, origin, scene.grid.tileSize, 4, strokeColor, fillColor, 1, scene.grid.tileScale.x, scene.grid.tileScale.y, 90);
+        renderShape(ctx, origin, scene.grid.tileSize, 4, strokeColor, fillColor, lineWidth, scene.grid.tileScale.x, scene.grid.tileScale.y, 90);
 }
 
 function renderShape(ctx: CanvasRenderingContext2D, origin: Vector2, radius: number, vertices: number, strokeColor: string = null, fillColor: string = null, lineWidth: number = 2, scaleX: number = 1, scaleY: number = 1, rotation: number = 0) {
@@ -120,15 +141,23 @@ function renderRect(ctx: CanvasRenderingContext2D, fillColor: string = null, str
 
 function renderHud(ctx: CanvasRenderingContext2D, scene: Scene) {
     // Tooltip
-    if (scene.grid.hoveredTile) {
+    let tile;
+    if (scene.grid.selectedTile) {
+        tile = scene.grid.selectedTile;
+    }
+    else if (scene.grid.hoveredTile) {
+        tile = scene.grid.hoveredTile;
+    }
+    if (tile) {
+        // Background
         const totalHeight = 64;
         const margin = 1;
         renderRect(ctx, "gray", "black", margin, ctx.canvas.height - totalHeight, ctx.canvas.width - (margin * 2), totalHeight - margin, 2);
-        
-        scene.grid.selectedTile = scene.grid.hoveredTile;
-        if (scene.grid.selectedTile) {
-            ctx.lineWidth = 2;
-            renderRect(ctx, scene.grid.selectedTile.color, "black", margin + (totalHeight / 8), ctx.canvas.height - (totalHeight / 1.09), totalHeight / 1.2, totalHeight / 1.2);
-        }
+        // Info
+        ctx.lineWidth = 2;
+        renderRect(ctx, BIOMES[tile.biome].color, "black", margin + (totalHeight / 8), ctx.canvas.height - (totalHeight / 1.09), totalHeight / 1.2, totalHeight / 1.2);
+        ctx.fillStyle = "black";
+        ctx.font = `20px ${FONT}`;
+        ctx.fillText(tile.biome, margin + 80, ctx.canvas.height - (totalHeight / 2));
     }
 }

@@ -1,4 +1,6 @@
 import { degreesToRadians } from "../utils/utils.js";
+import { FONT } from "./constants.js";
+import { BIOMES } from "./scene/biomes.js";
 export function renderGame(scene, input, canvas) {
     const ctx = canvas.getContext("2d");
     renderBackground(ctx, canvas);
@@ -8,6 +10,7 @@ export function renderGame(scene, input, canvas) {
     renderDebug(ctx, scene, input);
 }
 function renderDebug(ctx, scene, input) {
+    ctx.font = `16px ${FONT}`;
     // Mouse coordinates
     ctx.fillStyle = "black";
     ctx.fillText(input.mouseOrigin.x.toString(), 20, 20);
@@ -53,21 +56,38 @@ function renderBackground(ctx, canvas) {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 function renderGrid(ctx, scene) {
+    // let strokeColor = "black";
+    // for (const tile of scene.grid.tiles) {
+    //     if (tile !== scene.grid.selectedTile || tile !== scene.grid.hoveredTile) {
+    //         renderGridTile(ctx, scene, tile, strokeColor, BIOMES[tile.biome].color);
+    //     }
+    // }
+    // // This is placed after the for loop to render last.
+    // if (scene.grid.selectedTile) {
+    //     strokeColor = "cyan";
+    //     renderGridTile(ctx, scene, scene.grid.selectedTile, strokeColor, BIOMES[scene.grid.selectedTile.biome].color);
+    // }
+    // if (scene.grid.hoveredTile && scene.grid.hoveredTile !== scene.grid.selectedTile) {
+    //     strokeColor = "blue";
+    //     renderGridTile(ctx, scene, scene.grid.hoveredTile, strokeColor, BIOMES[scene.grid.hoveredTile.biome].color);
+    // }
     let strokeColor = "black";
     for (const tile of scene.grid.tiles) {
-        if (tile !== scene.grid.hoveredTile) {
-            renderGridTile(ctx, scene, tile, strokeColor, tile.color);
-        }
+        renderGridTile(ctx, scene, tile, strokeColor, BIOMES[tile.biome].color);
     }
     // This is placed after the for loop to render last.
     if (scene.grid.hoveredTile) {
         strokeColor = "blue";
-        renderGridTile(ctx, scene, scene.grid.hoveredTile, strokeColor, scene.grid.hoveredTile.color);
+        renderGridTile(ctx, scene, scene.grid.hoveredTile, strokeColor, null, 2);
+    }
+    if (scene.grid.selectedTile) {
+        strokeColor = "cyan";
+        renderGridTile(ctx, scene, scene.grid.selectedTile, strokeColor, null, 2);
     }
 }
-function renderGridTile(ctx, scene, tile, strokeColor, fillColor) {
+function renderGridTile(ctx, scene, tile, strokeColor, fillColor, lineWidth = 1) {
     const origin = tile.getOriginAsIsometricScaledAndOffsetByCamera(scene);
-    renderShape(ctx, origin, scene.grid.tileSize, 4, strokeColor, fillColor, 1, scene.grid.tileScale.x, scene.grid.tileScale.y, 90);
+    renderShape(ctx, origin, scene.grid.tileSize, 4, strokeColor, fillColor, lineWidth, scene.grid.tileScale.x, scene.grid.tileScale.y, 90);
 }
 function renderShape(ctx, origin, radius, vertices, strokeColor = null, fillColor = null, lineWidth = 2, scaleX = 1, scaleY = 1, rotation = 0) {
     ctx.beginPath();
@@ -99,14 +119,23 @@ function renderRect(ctx, fillColor = null, strokeColor = null, x = 32, y = 32, w
 }
 function renderHud(ctx, scene) {
     // Tooltip
-    if (scene.grid.hoveredTile) {
+    let tile;
+    if (scene.grid.selectedTile) {
+        tile = scene.grid.selectedTile;
+    }
+    else if (scene.grid.hoveredTile) {
+        tile = scene.grid.hoveredTile;
+    }
+    if (tile) {
+        // Background
         const totalHeight = 64;
         const margin = 1;
         renderRect(ctx, "gray", "black", margin, ctx.canvas.height - totalHeight, ctx.canvas.width - (margin * 2), totalHeight - margin, 2);
-        scene.grid.selectedTile = scene.grid.hoveredTile;
-        if (scene.grid.selectedTile) {
-            ctx.lineWidth = 2;
-            renderRect(ctx, scene.grid.selectedTile.color, "black", margin + (totalHeight / 8), ctx.canvas.height - (totalHeight / 1.09), totalHeight / 1.2, totalHeight / 1.2);
-        }
+        // Info
+        ctx.lineWidth = 2;
+        renderRect(ctx, BIOMES[tile.biome].color, "black", margin + (totalHeight / 8), ctx.canvas.height - (totalHeight / 1.09), totalHeight / 1.2, totalHeight / 1.2);
+        ctx.fillStyle = "black";
+        ctx.font = `20px ${FONT}`;
+        ctx.fillText(tile.biome, margin + 80, ctx.canvas.height - (totalHeight / 2));
     }
 }

@@ -1,4 +1,4 @@
-import { distanceEllipseVector2, distanceVector2, Vector2 } from "../../utils/vector2.js";
+import { distanceEllipseVector2, Vector2 } from "../../utils/vector2.js";
 import { Input } from "./input.js";
 import { Scene } from "./scene.js";
 import { Tile } from "./tile.js";
@@ -14,7 +14,7 @@ export class Grid {
         // Tiles
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                this.tiles.push(new Tile({x: x, y: y}, "green"));
+                this.tiles.push(new Tile({x: x, y: y}, "Plains"));
             }
         }
 

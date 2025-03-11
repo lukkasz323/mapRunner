@@ -1,11 +1,8 @@
-import { Biome } from "./biome";
 export class Tile {
     origin;
-    color;
     biome;
-    constructor(origin, color = null, biome = Biome.Plains) {
+    constructor(origin, biome) {
         this.origin = origin;
-        this.color = color;
         this.biome = biome;
     }
     getOriginAsIsometric() {
