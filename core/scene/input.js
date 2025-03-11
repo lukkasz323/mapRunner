@@ -3,6 +3,8 @@ export class Input {
     mouseOrigin;
     //worldOrigin: Vector2;
     isMouseDown = false;
+    isMouseDownLeft = false;
+    isMouseDownRight = false;
     keys = new Map();
     constructor(canvas) {
         this.canvas = canvas;
@@ -15,6 +17,7 @@ export class Input {
         this.canvas.addEventListener("mouseup", (event) => this.#onMouseUp(event));
         document.addEventListener("keydown", (event) => this.#onKeyDown(event));
         document.addEventListener("keyup", (event) => this.#onKeyUp(event));
+        this.canvas.addEventListener("contextmenu", (event) => this.#onContextMenu(event));
     }
     #onMouseMove(e) {
         const canvasBoundingClientRect = this.canvas.getBoundingClientRect();
@@ -26,14 +29,26 @@ export class Input {
     }
     #onMouseDown(e) {
         this.isMouseDown = true;
+        if (e.button === 0) {
+            this.isMouseDownLeft = true;
+        }
+        if (e.button === 2) {
+            this.isMouseDownRight = true;
+        }
+        console.log(this.isMouseDown, this.isMouseDownLeft, this.isMouseDownRight);
     }
     #onMouseUp(e) {
         this.isMouseDown = false;
+        this.isMouseDownLeft = false;
+        this.isMouseDownRight = false;
     }
     #onKeyDown(e) {
         this.keys.set(e.code, true);
     }
     #onKeyUp(e) {
         this.keys.set(e.code, false);
+    }
+    #onContextMenu(e) {
+        e.preventDefault();
     }
 }

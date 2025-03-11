@@ -5,6 +5,8 @@ export class Input {
     //worldOrigin: Vector2;
 
     isMouseDown = false;
+    isMouseDownLeft = false;
+    isMouseDownRight = false;
     keys = new Map<string, boolean>();
     
     constructor(private canvas: HTMLCanvasElement) {
@@ -19,6 +21,7 @@ export class Input {
         this.canvas.addEventListener("mouseup", (event: PointerEvent) => this.#onMouseUp(event));
         document.addEventListener("keydown", (event: KeyboardEvent) => this.#onKeyDown(event));
         document.addEventListener("keyup", (event: KeyboardEvent) => this.#onKeyUp(event));
+        this.canvas.addEventListener("contextmenu", (event: PointerEvent) => this.#onContextMenu(event));
     }
 
     #onMouseMove(e: PointerEvent): void {
@@ -34,10 +37,19 @@ export class Input {
 
     #onMouseDown(e: PointerEvent) {
         this.isMouseDown = true;
+        if (e.button === 0) {
+            this.isMouseDownLeft = true;
+        }
+        if (e.button === 2) {
+            this.isMouseDownRight = true;
+        }
+        console.log(this.isMouseDown, this.isMouseDownLeft, this.isMouseDownRight);
     }
 
     #onMouseUp(e: PointerEvent) {
         this.isMouseDown = false;
+        this.isMouseDownLeft = false;
+        this.isMouseDownRight = false;
     }
 
     #onKeyDown(e: KeyboardEvent) {
@@ -46,5 +58,9 @@ export class Input {
 
     #onKeyUp(e: KeyboardEvent) {
         this.keys.set(e.code, false);
+    }
+
+    #onContextMenu(e: PointerEvent) {
+        e.preventDefault();
     }
 }
