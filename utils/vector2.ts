@@ -15,7 +15,7 @@ export function distanceVector2(a: Vector2, b: Vector2): number {
     return Math.sqrt(((a.x - b.x) ** 2) + ((a.y - b.y) ** 2));
 }
 
-export function distanceEllipseVector2(a: Vector2, b: Vector2, scale1: number, scale2): number {
+export function distanceEllipseVector2(a: Vector2, b: Vector2, scale1: number, scale2: number): number {
     return Math.sqrt(((a.x - b.x) ** 2  * scale1) + ((a.y - b.y) ** 2 * scale2));
 }
 

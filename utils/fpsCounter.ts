@@ -10,7 +10,7 @@ export class FPSCounter {
         return Math.round(sum / this.#fpsRecords.length || 0);
     }
 
-    update(deltaTime) {
+    update(deltaTime: number) {
         const fps = 1000 / deltaTime;
         this.#fpsRecords.push(fps);
         if (this.#fpsRecords.length > this.accuracy) {
