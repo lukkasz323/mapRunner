@@ -35,7 +35,6 @@ export class Input {
         if (e.button === 2) {
             this.isMouseDownRight = true;
         }
-        console.log(this.isMouseDown, this.isMouseDownLeft, this.isMouseDownRight);
     }
     #onMouseUp(e) {
         this.isMouseDown = false;

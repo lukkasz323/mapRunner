@@ -1,9 +1,11 @@
 import { Vector2 } from "../../utils/vector2";
 import { BIOMES } from "./biomes";
 import { Scene } from "./scene";
+import { GatherersCamp } from "./structures/gatherersCamp.js";
+import { Structure } from "./structures/structure.js";
 
 export class Tile {
-    
+    structure: Structure;
 
     constructor(public origin: Vector2, public biome: keyof typeof BIOMES) {
     }

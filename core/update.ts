@@ -1,5 +1,6 @@
 import { Input } from "./scene/input.js";
 import { Scene } from "./scene/scene.js";
+import { GatherersCamp } from "./scene/structures/gatherersCamp.js";
 
 export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement, deltaTime: number) {
     if (input.keys.get("Backquote")) {
@@ -29,7 +30,7 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
     scene.grid.updateHoveredTile(input, scene);
 
     // Tile select
-    if (input.isMouseDown) {
+    if (input.isMouseDownLeft) {
         if (scene.grid.hoveredTile) {
             scene.grid.selectedTile = scene.grid.hoveredTile;
         } else {
@@ -37,5 +38,11 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
         }
     }
     
+    // Place structures
+    if (input.isMouseDownRight && scene.grid.hoveredTile && !scene.grid.hoveredTile.structure && scene.economy.workers < scene.economy.settlers) {
+        scene.economy.workers += 1;
+        scene.grid.hoveredTile.structure = new GatherersCamp();
+    }
+
     scene.ticks++;
 }

@@ -1,6 +1,7 @@
 export class Tile {
     origin;
     biome;
+    structure;
     constructor(origin, biome) {
         this.origin = origin;
         this.biome = biome;
