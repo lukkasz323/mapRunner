@@ -12,21 +12,26 @@ export class Game {
         this.scene = new Scene(canvas);
     }
 
-    run() {
+    run(): void {
         //renderGame(this.scene, this.canvas);
         let lastDate = performance.now();
-        requestAnimationFrame(() => gameLoop(this.scene, this.canvas, this.input));
+        requestAnimationFrame(() => gameLoop(this, this.scene, this.canvas, this.input));
         this.input.addEventListeners();
         
-        function gameLoop(scene: Scene, canvas: HTMLCanvasElement, input: Input) {
+        function gameLoop(_this: Game, scene: Scene, canvas: HTMLCanvasElement, input: Input) {
             let now = performance.now();
             let deltaTime = now - lastDate;
             lastDate = now;
 
-            updateGame(scene, input, canvas, deltaTime);
+            const continueGame = updateGame(scene, input, canvas, deltaTime);
             renderGame(scene, input, canvas);
 
-            requestAnimationFrame(() => gameLoop(scene, canvas, input));
+            // Restart game
+            if (!continueGame) {
+                _this.scene = new Scene(canvas);
+            }
+
+            requestAnimationFrame(() => gameLoop(_this, _this.scene, canvas, input));
         }        
     }   
 }

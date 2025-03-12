@@ -2,7 +2,10 @@ import { Input } from "./scene/input.js";
 import { Scene } from "./scene/scene.js";
 import { GatherersCamp } from "./scene/structures/gatherersCamp.js";
 
-export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement, deltaTime: number) {
+export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement, deltaTime: number): boolean {
+    let loop = true;
+
+    // Debug
     if (input.keys.get("Backquote")) {
         scene.fpsCounter.update(deltaTime);
         console.log(scene.fpsCounter.calculateAverage());
@@ -44,5 +47,20 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
         scene.grid.hoveredTile.structure = new GatherersCamp();
     }
 
+    // Process
+    if (scene.ticks % 30 === 0) {
+        scene.economy.process(scene);
+    }
+
+    // Game over
+    if (scene.economy.settlers < 0) {
+        loop = false;
+    }
+
+    // Must be last!
     scene.ticks++;
+    if (loop) {
+        return true;
+    }
+    return false;
 }

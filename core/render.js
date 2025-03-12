@@ -150,7 +150,11 @@ function renderHud(ctx, scene) {
         }
     }
     // Economy
+    const economy = scene.economy;
     ctx.font = `16px ${FONT}`;
     ctx.fillStyle = "black";
-    ctx.fillText(`Settlers: ${scene.economy.settlers - scene.economy.workers} / ${scene.economy.settlers}`, 128, 32);
+    ctx.fillText(`Settlers: ${economy.settlers - economy.workers} / ${economy.settlers}`, 150, 32);
+    ctx.fillText(`Food: ${economy.food}`, 350, 32);
+    ctx.fillText(`Wood: ${economy.wood}`, 500, 32);
+    ctx.fillText(`Stone: ${economy.stone}`, 650, 32);
 }

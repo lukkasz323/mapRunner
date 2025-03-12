@@ -10,7 +10,7 @@ export class Grid {
     tileSize = 32;
     tileScale: Vector2 = {x: 2, y: 1};
 
-    constructor(public scene: Scene, public width: number = 5, public height: number = 5) {
+    constructor(public scene: Scene, public width: number = 50, public height: number = 50) {
         // Tiles
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {

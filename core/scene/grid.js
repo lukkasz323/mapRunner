@@ -9,7 +9,7 @@ export class Grid {
     selectedTile;
     tileSize = 32;
     tileScale = { x: 2, y: 1 };
-    constructor(scene, width = 5, height = 5) {
+    constructor(scene, width = 50, height = 50) {
         this.scene = scene;
         this.width = width;
         this.height = height;
