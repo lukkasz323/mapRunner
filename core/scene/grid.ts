@@ -1,4 +1,5 @@
 import { distanceEllipseVector2, Vector2 } from "../../utils/vector2.js";
+import { BIOMES } from "./biomes.js";
 import { Input } from "./input.js";
 import { Scene } from "./scene.js";
 import { Tile } from "./tile.js";
@@ -10,11 +11,17 @@ export class Grid {
     tileSize = 32;
     tileScale: Vector2 = {x: 2, y: 1};
 
-    constructor(public scene: Scene, public width: number = 50, public height: number = 50) {
+    constructor(public scene: Scene, public width: number = 5, public height: number = 5) {
         // Tiles
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                this.tiles.push(new Tile({x: x, y: y}, "Plains"));
+                let b: keyof typeof BIOMES = "Plains";
+                if(y===0)b="Ocean";
+                if(y===1)b="Coast";
+                if(y===2)b="Plains";
+                if(y===3)b="Forest";
+                if(y===4)b="Mountains";
+                this.tiles.push(new Tile({x: x, y: y}, b));
             }
         }
 

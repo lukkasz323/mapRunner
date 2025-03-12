@@ -8,10 +8,14 @@ export class Economy {
     stone = 0;
 
     process(scene: Scene): void {
-        this.food -= Math.max(0, this.settlers);
-        if (this.food < 0) {
-            this.settlers -= 1;
+        for (let i = 0; i < this.settlers; i++) {
+            if (this.food > 0) {
+                this.food -= 1;
+            } else {
+                this.settlers -= 1;
+            }
         }
+        this.food = Math.max(0, this.food);
 
         for (const tile of scene.grid.tiles) {
             if (tile.structure) {
