@@ -9,4 +9,7 @@ export function busy(milliseconds) {
 export function degreesToRadians(degrees) {
     return degrees * (Math.PI / 180);
 }
+export function rngBetweenInclusive(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
 export const DIAGONAL = 0.7071067811865475;

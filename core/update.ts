@@ -51,6 +51,9 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
     if (scene.ticks % 30 === 0) {
         scene.economy.process(scene);
     }
+    if (scene.ticks % 60 === 0) {
+        scene.economy.settlers += 1;
+    }
 
     // Game over
     if (scene.economy.settlers < 0) {
