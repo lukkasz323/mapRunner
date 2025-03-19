@@ -9,11 +9,6 @@ export class Scene {
     map = new MapItem();
     constructor(canvas) {
         this.canvas = canvas;
-        this.character.loot(this.map.run());
-        this.character.loot(this.map.run());
-        this.character.loot(this.map.run());
-        this.character.loot(this.map.run());
-        this.character.loot(this.map.run());
         console.log(this); // Debug
     }
 }

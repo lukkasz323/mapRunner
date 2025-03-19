@@ -10,27 +10,29 @@ function renderDebug(ctx, scene, input) {
     ctx.font = `16px ${FONT}`;
     // Mouse coordinates
     ctx.fillStyle = "black";
-    ctx.fillText(input.mouseOrigin.x.toString(), ctx.canvas.width - 40, 20);
-    ctx.fillText(input.mouseOrigin.y.toString(), ctx.canvas.width - 40, 40);
+    let y = 20;
+    ctx.fillText(input.mouseOrigin.x.toString(), ctx.canvas.width - 40, y += 20);
+    ctx.fillText(input.mouseOrigin.y.toString(), ctx.canvas.width - 40, y += 20);
 }
 function renderUI(ctx, scene) {
     ctx.font = `16px ${FONT}`;
     ctx.fillStyle = "black";
-    ctx.fillText(scene.character.name, 20, 20);
-    ctx.fillText(`Level: ${scene.character.level}`, 20, 40);
-    ctx.fillText(`STR: ${scene.character.str}`, 20, 60);
-    ctx.fillText(`DEX: ${scene.character.dex}`, 20, 80);
-    ctx.fillText(`INT: ${scene.character.int}`, 20, 100);
-    ctx.fillText(`Health: ${scene.character.health}`, 20, 120);
-    ctx.fillText(`Items: `, 120, 40);
-    const inv = scene.character.inventory;
-    for (let i = 0; i < inv.length; i++) {
-        const item = inv[i];
+    let x = 20;
+    let y = 20;
+    ctx.fillText(scene.character.name, x, y += 20);
+    ctx.fillText(`Level: ${scene.character.level}`, x, y += 20);
+    ctx.fillText(`XP: ${scene.character.xp.quantity} / ${scene.character.xpRequired}`, x, y += 20);
+    ctx.fillText(`STR: ${scene.character.str}`, x, y += 20);
+    ctx.fillText(`DEX: ${scene.character.dex}`, x, y += 20);
+    ctx.fillText(`INT: ${scene.character.int}`, x, y += 20);
+    ctx.fillText(`Health: ${scene.character.health}`, x, y += 20);
+    x += 140;
+    y = 20;
+    ctx.fillText('Items:', x, y += 20);
+    for (const item of scene.character.inventory) {
         const text = "quantity" in item ? `${item.displayName} ${item.quantity}` : item.displayName;
-        console.log("quantity" in item);
-        ctx.fillText(text, 120, 60 + 20 * i);
+        ctx.fillText(text, x, y += 20);
     }
-    console.log(1);
 }
 function renderBackground(ctx, canvas) {
     ctx.fillStyle = "white";

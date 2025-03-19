@@ -10,6 +10,13 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
         console.log(scene.fpsCounter.calculateAverage());
     }
 
+    // Input
+    if (input.isMouseDown) {
+        scene.character.loot(scene.map.run()); 
+        scene.character.xp.quantity += 6;
+        scene.character.tryLevelUp();
+    }
+
     // Must be last!
     scene.ticks++;
     if (loop) {
