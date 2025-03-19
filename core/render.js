@@ -3,7 +3,8 @@ import { FONT } from "./constants.js";
 export function renderGame(scene, input, canvas) {
     const ctx = canvas.getContext("2d");
     renderBackground(ctx, canvas);
-    renderUI(ctx, scene);
+    renderXpBar(ctx, scene);
+    renderStats(ctx, scene);
     renderDebug(ctx, scene, input);
 }
 function renderDebug(ctx, scene, input) {
@@ -14,7 +15,7 @@ function renderDebug(ctx, scene, input) {
     ctx.fillText(input.mouseOrigin.x.toString(), ctx.canvas.width - 40, y += 20);
     ctx.fillText(input.mouseOrigin.y.toString(), ctx.canvas.width - 40, y += 20);
 }
-function renderUI(ctx, scene) {
+function renderStats(ctx, scene) {
     ctx.font = `16px ${FONT}`;
     ctx.fillStyle = "black";
     let x = 20;
@@ -28,11 +29,16 @@ function renderUI(ctx, scene) {
     ctx.fillText(`Health: ${scene.character.health}`, x, y += 20);
     x += 140;
     y = 20;
-    ctx.fillText('Items:', x, y += 20);
+    ctx.fillText('Inventory:', x, y += 20);
     for (const item of scene.character.inventory) {
         const text = "quantity" in item ? `${item.displayName} ${item.quantity}` : item.displayName;
         ctx.fillText(text, x, y += 20);
     }
+}
+function renderXpBar(ctx, scene) {
+    renderRect(ctx, "gray", "black", 1, 1, ctx.canvas.width - 2, 20);
+    renderRect(ctx, "gold", null, 4, 4, (ctx.canvas.width - 8) * (scene.character.xp.quantity / scene.character.xpRequired), 14);
+    console.log((scene.character.xp.quantity / scene.character.xpRequired));
 }
 function renderBackground(ctx, canvas) {
     ctx.fillStyle = "white";
