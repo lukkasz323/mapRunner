@@ -1,6 +1,6 @@
 import { degreesToRadians } from "../utils/utils.js";
 import { Vector2 } from "../utils/vector2.js";
-import { FONT } from "./constants.js";
+import { CTX_FONT, FONT_SIZE } from "./constants.js";
 import { Input } from "./scene/input.js";
 import { Scene } from "./scene/scene.js";
 import { IQuantity } from "./scene/items/iQuantity.js";
@@ -9,13 +9,14 @@ export function renderGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
     const ctx = canvas.getContext("2d");
 
     renderBackground(ctx, canvas);
-    renderXpBar(ctx, scene);
+    renderProgressBars(ctx, scene);
     renderStats(ctx, scene);
+    renderUI(ctx, scene, input);
     renderDebug(ctx, scene, input);
 }
 
 function renderDebug(ctx: CanvasRenderingContext2D, scene: Scene, input: Input) {
-    ctx.font = `16px ${FONT}`;
+    ctx.font = CTX_FONT;
     // Mouse coordinates
     ctx.fillStyle = "black";
     let y = 20;
@@ -23,8 +24,17 @@ function renderDebug(ctx: CanvasRenderingContext2D, scene: Scene, input: Input) 
     ctx.fillText(input.mouseOrigin.y.toString(), ctx.canvas.width - 40, y += 20);
 }
 
+function renderUI(ctx: CanvasRenderingContext2D, scene: Scene, input: Input) {
+    for (const box of scene.ui.boxes) {
+        renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
+        if (box.text) {
+            ctx.fillText(box.text, box.origin.x + 4, box.origin.y + FONT_SIZE);
+        }
+    }
+}
+
 function renderStats(ctx: CanvasRenderingContext2D, scene: Scene) {
-    ctx.font = `16px ${FONT}`;
+    ctx.font = CTX_FONT;
     ctx.fillStyle = "black";
     let x = 20;
     let y = 20;
@@ -47,7 +57,7 @@ function renderStats(ctx: CanvasRenderingContext2D, scene: Scene) {
     renderRect(ctx, "gray", "black", x - 96 , y, 64, 64); // Gloves
     renderRect(ctx, "gray", "black", x + 96 , y, 64, 64); // Boots
     renderRect(ctx, "gray", "black", x - 48 , y - 48, 32, 32); // Left Ring
-    renderRect(ctx, "gray", "black", x + 80 , y - 48, 32, 32); // Left Ring
+    renderRect(ctx, "gray", "black", x + 80 , y - 48, 32, 32); // Right Ring
 
     x += 200;
     y = 180;
@@ -58,10 +68,14 @@ function renderStats(ctx: CanvasRenderingContext2D, scene: Scene) {
     }
 }
 
-function renderXpBar(ctx: CanvasRenderingContext2D, scene: Scene) {
-    renderRect(ctx, "gray", "black", 1, 1, ctx.canvas.width - 2, 20);
-    renderRect(ctx, "gold", null, 4, 4, (ctx.canvas.width - 8) * (scene.character.xp.quantity / scene.character.xpRequired), 14);
-    console.log((scene.character.xp.quantity / scene.character.xpRequired));
+function renderProgressBars(ctx: CanvasRenderingContext2D, scene: Scene) {
+    renderProgressBar(ctx, {x: 0, y: 0}, {x: ctx.canvas.width, y: 20}, scene.character.xp.quantity, scene.character.xpRequired, "gold", "gray"); // XP
+    renderProgressBar(ctx, {x: 224, y: 66}, {x: 256, y: 16}, scene.mapProgress, 100, "blue", "gray"); // xd
+}
+
+function renderProgressBar(ctx: CanvasRenderingContext2D, origin: Vector2, size: Vector2, current: number, max: number, colorProgress: string, colorBackground: string) {
+    renderRect(ctx, colorBackground, "black", origin.x + 1, origin.y + 1, size.x - 2, size.y);
+    renderRect(ctx, colorProgress, null, origin.x + 4, origin.y + 4, (size.x - 8) * (current / max), size.y - 6);
 }
 
 function renderBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {

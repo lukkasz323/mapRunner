@@ -1,3 +1,4 @@
+import { isRectCollidingWithPoint } from "./collision.js";
 import { Input } from "./scene/input.js";
 import { Scene } from "./scene/scene.js";
 
@@ -10,12 +11,24 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
         console.log(scene.fpsCounter.calculateAverage());
     }
 
-    // Input
+    // UI
     if (input.isMouseDown && !input.singleClickLock) {
-        scene.character.loot(scene.map.run()); 
-        scene.character.tryLevelUp();
+        if (isRectCollidingWithPoint(scene.ui.runMapButton, input.mouseOrigin)) {
+            scene.isMapActive = !scene.isMapActive;
+            scene.ui.runMapButton.text = scene.isMapActive ? "Pause Map" : "Run Map";
+        }
 
         input.singleClickLock = true;
+    }
+
+    // Map run
+    if (scene.mapProgress >= 100) {
+        scene.mapProgress = 0;
+        scene.character.loot(scene.map.loot()); 
+        scene.character.tryLevelUp();
+    }
+    if (scene.isMapActive) {
+        scene.mapProgress += 1;
     }
 
     // Must be last!

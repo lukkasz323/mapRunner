@@ -6,7 +6,7 @@ import { Xp } from "./items/xp.js";
 export class MapItem {
     tier = 1;
 
-    run(): Item[] {
+    loot(): Item[] {
         const loot = [];
 
         loot.push(new Xp(this.tier * (4 + (Math.ceil(Math.random() * 4)))));

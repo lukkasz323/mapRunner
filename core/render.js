@@ -1,22 +1,31 @@
 import { degreesToRadians } from "../utils/utils.js";
-import { FONT } from "./constants.js";
+import { CTX_FONT, FONT_SIZE } from "./constants.js";
 export function renderGame(scene, input, canvas) {
     const ctx = canvas.getContext("2d");
     renderBackground(ctx, canvas);
-    renderXpBar(ctx, scene);
+    renderProgressBars(ctx, scene);
     renderStats(ctx, scene);
+    renderUI(ctx, scene, input);
     renderDebug(ctx, scene, input);
 }
 function renderDebug(ctx, scene, input) {
-    ctx.font = `16px ${FONT}`;
+    ctx.font = CTX_FONT;
     // Mouse coordinates
     ctx.fillStyle = "black";
     let y = 20;
     ctx.fillText(input.mouseOrigin.x.toString(), ctx.canvas.width - 40, y += 20);
     ctx.fillText(input.mouseOrigin.y.toString(), ctx.canvas.width - 40, y += 20);
 }
+function renderUI(ctx, scene, input) {
+    for (const box of scene.ui.boxes) {
+        renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
+        if (box.text) {
+            ctx.fillText(box.text, box.origin.x + 4, box.origin.y + FONT_SIZE);
+        }
+    }
+}
 function renderStats(ctx, scene) {
-    ctx.font = `16px ${FONT}`;
+    ctx.font = CTX_FONT;
     ctx.fillStyle = "black";
     let x = 20;
     let y = 20;
@@ -38,7 +47,7 @@ function renderStats(ctx, scene) {
     renderRect(ctx, "gray", "black", x - 96, y, 64, 64); // Gloves
     renderRect(ctx, "gray", "black", x + 96, y, 64, 64); // Boots
     renderRect(ctx, "gray", "black", x - 48, y - 48, 32, 32); // Left Ring
-    renderRect(ctx, "gray", "black", x + 80, y - 48, 32, 32); // Left Ring
+    renderRect(ctx, "gray", "black", x + 80, y - 48, 32, 32); // Right Ring
     x += 200;
     y = 180;
     ctx.fillText(`Inventory:`, x, y += 20);
@@ -47,10 +56,13 @@ function renderStats(ctx, scene) {
         ctx.fillText(text, x, y += 20);
     }
 }
-function renderXpBar(ctx, scene) {
-    renderRect(ctx, "gray", "black", 1, 1, ctx.canvas.width - 2, 20);
-    renderRect(ctx, "gold", null, 4, 4, (ctx.canvas.width - 8) * (scene.character.xp.quantity / scene.character.xpRequired), 14);
-    console.log((scene.character.xp.quantity / scene.character.xpRequired));
+function renderProgressBars(ctx, scene) {
+    renderProgressBar(ctx, { x: 0, y: 0 }, { x: ctx.canvas.width, y: 20 }, scene.character.xp.quantity, scene.character.xpRequired, "gold", "gray"); // XP
+    renderProgressBar(ctx, { x: 224, y: 66 }, { x: 256, y: 16 }, scene.mapProgress, 100, "blue", "gray"); // xd
+}
+function renderProgressBar(ctx, origin, size, current, max, colorProgress, colorBackground) {
+    renderRect(ctx, colorBackground, "black", origin.x + 1, origin.y + 1, size.x - 2, size.y);
+    renderRect(ctx, colorProgress, null, origin.x + 4, origin.y + 4, (size.x - 8) * (current / max), size.y - 6);
 }
 function renderBackground(ctx, canvas) {
     ctx.fillStyle = "white";
