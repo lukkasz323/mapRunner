@@ -2,10 +2,11 @@ export class Input {
     canvas;
     mouseOrigin;
     //worldOrigin: Vector2;
+    keys = new Map();
     isMouseDown = false;
     isMouseDownLeft = false;
     isMouseDownRight = false;
-    keys = new Map();
+    singleClickLock = false;
     constructor(canvas) {
         this.canvas = canvas;
         this.mouseOrigin = { x: this.canvas.width / 2, y: this.canvas.height / 2 };
@@ -35,6 +36,7 @@ export class Input {
         if (e.button === 2) {
             this.isMouseDownRight = true;
         }
+        this.singleClickLock = false;
     }
     #onMouseUp(e) {
         this.isMouseDown = false;

@@ -27,9 +27,21 @@ function renderStats(ctx, scene) {
     ctx.fillText(`DEX: ${scene.character.dex}`, x, y += 20);
     ctx.fillText(`INT: ${scene.character.int}`, x, y += 20);
     ctx.fillText(`Health: ${scene.character.health}`, x, y += 20);
-    x += 140;
-    y = 20;
-    ctx.fillText('Inventory:', x, y += 20);
+    y += 20;
+    ctx.fillText(`Equipment:`, x, y += 20);
+    renderRect(ctx, "gray", "black", x += 96, y += 20, 64, 64); // Helmet
+    renderRect(ctx, "gray", "black", x + 80, y + 16, 32, 32); // Amulet
+    renderRect(ctx, "gray", "black", x, y += 96, 64, 128); // Body armor
+    renderRect(ctx, "gray", "black", x - 96, y - 32, 64, 128); // Main Hand
+    renderRect(ctx, "gray", "black", x + 96, y - 32, 64, 128); // Off Hand
+    renderRect(ctx, "gray", "black", x, y += 160, 64, 32); // Belt
+    renderRect(ctx, "gray", "black", x - 96, y, 64, 64); // Gloves
+    renderRect(ctx, "gray", "black", x + 96, y, 64, 64); // Boots
+    renderRect(ctx, "gray", "black", x - 48, y - 48, 32, 32); // Left Ring
+    renderRect(ctx, "gray", "black", x + 80, y - 48, 32, 32); // Left Ring
+    x += 200;
+    y = 180;
+    ctx.fillText(`Inventory:`, x, y += 20);
     for (const item of scene.character.inventory) {
         const text = "quantity" in item ? `${item.displayName} ${item.quantity}` : item.displayName;
         ctx.fillText(text, x, y += 20);
@@ -62,13 +74,19 @@ function renderShape(ctx, origin, radius, vertices, strokeColor = null, fillColo
     }
 }
 function renderRect(ctx, fillColor = null, strokeColor = null, x = 32, y = 32, w = 32, h = 32, lineWidth = 2) {
+    let previousFillStyle;
+    let previousStrokeStyle;
     if (fillColor) {
+        previousFillStyle = ctx.fillStyle;
         ctx.fillStyle = fillColor;
         ctx.fillRect(x, y, w, h);
     }
     if (strokeColor) {
+        previousStrokeStyle = ctx.strokeStyle;
         ctx.lineWidth = lineWidth;
         ctx.strokeStyle = strokeColor;
         ctx.strokeRect(x, y, w, h);
     }
+    ctx.fillStyle = previousFillStyle;
+    ctx.strokeStyle = previousStrokeStyle;
 }

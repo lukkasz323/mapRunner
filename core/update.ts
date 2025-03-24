@@ -11,10 +11,11 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
     }
 
     // Input
-    if (input.isMouseDown) {
+    if (input.isMouseDown && !input.singleClickLock) {
         scene.character.loot(scene.map.run()); 
-        scene.character.xp.quantity += 6;
         scene.character.tryLevelUp();
+
+        input.singleClickLock = true;
     }
 
     // Must be last!

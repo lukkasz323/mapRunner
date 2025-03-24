@@ -11,6 +11,16 @@ export class Character {
     int = 10;
     health = 100;
     inventory: Item[] = [];
+    mainHand: Item = null;
+    offHand: Item = null;
+    bodyarmor: Item = null;
+    helmet: Item = null;
+    boots: Item = null;
+    gloves: Item = null;
+    belt: Item = null;
+    amulet: Item = null;
+    leftRing: Item = null;
+    rightRing: Item = null;
     constructor(public name: string) {
         this.xp = new Xp(0);
         this.inventory.push(this.xp);
