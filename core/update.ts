@@ -17,7 +17,15 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
             scene.isMapActive = !scene.isMapActive;
             scene.ui.runMapButton.text = scene.isMapActive ? "Pause Map" : "Run Map";
         }
+        for (let i = 0; i < scene.ui.inventory.length; i++) {
+            const box = scene.ui.inventory[i];
+            
+            if (isRectCollidingWithPoint(box, input.mouseOrigin)) {
+                const item = scene.character.inventory[i];
 
+                // ctx.fillText(item.displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
+            }
+        }
         input.singleClickLock = true;
     }
 
@@ -28,7 +36,7 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
         scene.character.tryLevelUp();
     }
     if (scene.isMapActive) {
-        scene.mapProgress += 1;
+        scene.mapProgress += 20;
     }
 
     // Must be last!
@@ -38,3 +46,13 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
     }
     return false;
 }
+
+// function updateContext(scene: Scene, context: string) {
+//     switch (context) {
+//         case "1":
+//             break;
+//         default:
+//             console.error("err");
+//             break;
+//     }
+// }

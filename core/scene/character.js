@@ -9,6 +9,7 @@ export class Character {
     int = 10;
     health = 100;
     inventory = [];
+    invSize = { x: 8, y: 5 };
     mainHand = null;
     offHand = null;
     bodyarmor = null;
@@ -23,6 +24,9 @@ export class Character {
         this.name = name;
         this.xp = new Xp(0);
         this.inventory.push(this.xp);
+    }
+    getInvLength() {
+        return this.invSize.x * this.invSize.y;
     }
     loot(loot) {
         for (const lootItem of loot) {

@@ -6,14 +6,13 @@ import { UI } from "./ui/ui.js";
 export class Scene {
     fpsCounter = new FPSCounter();
     ticks = 0;
-    ui = new UI();
     character = new Character("Hero");
+    ui = new UI(this);
     map = new MapItem();
     mapProgress = 0;
     isMapActive = true;
 
     constructor(private canvas: HTMLCanvasElement) {
-
         console.log(this); // Debug
     }
 }

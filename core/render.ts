@@ -1,6 +1,6 @@
 import { degreesToRadians } from "../utils/utils.js";
 import { Vector2 } from "../utils/vector2.js";
-import { CTX_FONT, FONT_SIZE } from "./constants.js";
+import { CTX_FONT, FONT, FONT_SIZE } from "./constants.js";
 import { Input } from "./scene/input.js";
 import { Scene } from "./scene/scene.js";
 import { IQuantity } from "./scene/items/iQuantity.js";
@@ -10,8 +10,8 @@ export function renderGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
 
     renderBackground(ctx, canvas);
     renderProgressBars(ctx, scene);
+    renderUI(ctx, scene);
     renderStats(ctx, scene);
-    renderUI(ctx, scene, input);
     renderDebug(ctx, scene, input);
 }
 
@@ -24,11 +24,20 @@ function renderDebug(ctx: CanvasRenderingContext2D, scene: Scene, input: Input) 
     ctx.fillText(input.mouseOrigin.y.toString(), ctx.canvas.width - 40, y += 20);
 }
 
-function renderUI(ctx: CanvasRenderingContext2D, scene: Scene, input: Input) {
+function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
     for (const box of scene.ui.boxes) {
         renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
         if (box.text) {
             ctx.fillText(box.text, box.origin.x + 4, box.origin.y + FONT_SIZE);
+        }
+    }
+    for (let i = 0; i < scene.ui.inventory.length; i++) {
+        const box = scene.ui.inventory[i];
+        const item = scene.character.inventory[i];
+
+        renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
+        if (item) {
+            ctx.fillText(item.displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
         }
     }
 }
@@ -59,12 +68,20 @@ function renderStats(ctx: CanvasRenderingContext2D, scene: Scene) {
     renderRect(ctx, "gray", "black", x - 48 , y - 48, 32, 32); // Left Ring
     renderRect(ctx, "gray", "black", x + 80 , y - 48, 32, 32); // Right Ring
 
-    x += 200;
-    y = 180;
+    x += 180;
+    y = 530;
     ctx.fillText(`Inventory:`, x, y += 20);
-    for (const item of scene.character.inventory) {
+    for (let i = 0; i < scene.character.inventory.length; i++) {
+        const item = scene.character.inventory[i];
+        
         const text = "quantity" in item ? `${item.displayName} ${(item as IQuantity).quantity}` : item.displayName;
-        ctx.fillText(text, x, y += 20);
+        ctx.font = `12px ${FONT}`;
+        ctx.fillText(text, x, y += 10);
+
+        if (i !== 0 && i % 25 === 0) {
+            x += 80;
+            y = 550;
+        }
     }
 }
 

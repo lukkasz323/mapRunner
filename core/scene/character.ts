@@ -1,3 +1,4 @@
+import { Vector2 } from "../../utils/vector2.js";
 import { IQuantity } from "./items/iQuantity.js";
 import { Item } from "./items/item.js";
 import { Xp } from "./items/xp.js";
@@ -11,6 +12,7 @@ export class Character {
     int = 10;
     health = 100;
     inventory: Item[] = [];
+    invSize: Vector2 = {x: 8, y: 5};
     mainHand: Item = null;
     offHand: Item = null;
     bodyarmor: Item = null;
@@ -24,6 +26,10 @@ export class Character {
     constructor(public name: string) {
         this.xp = new Xp(0);
         this.inventory.push(this.xp);
+    }
+
+    getInvLength() {
+        return this.invSize.x * this.invSize.y;
     }
 
     loot(loot: Item[]) {

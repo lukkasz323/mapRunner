@@ -6,8 +6,8 @@ export class Scene {
     canvas;
     fpsCounter = new FPSCounter();
     ticks = 0;
-    ui = new UI();
     character = new Character("Hero");
+    ui = new UI(this);
     map = new MapItem();
     mapProgress = 0;
     isMapActive = true;
