@@ -28,7 +28,7 @@ export function updateGame(scene, input, canvas, deltaTime) {
         scene.character.tryLevelUp();
     }
     if (scene.isMapActive) {
-        scene.mapProgress += 20;
+        scene.mapProgress += 10;
     }
     // Must be last!
     scene.ticks++;

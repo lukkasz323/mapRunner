@@ -9,8 +9,8 @@ export class MapItem {
     loot(): Item[] {
         const loot = [];
 
-        loot.push(new Xp(this.tier * (4 + (Math.ceil(Math.random() * 4)))));
         loot.push(new Gold(Math.ceil(Math.random() * 100)));
+        loot.push(new Xp(this.tier * (4 + (Math.ceil(Math.random() * 4)))));
         loot.push(new Sword());
 
         return loot;

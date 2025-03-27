@@ -36,7 +36,7 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
         scene.character.tryLevelUp();
     }
     if (scene.isMapActive) {
-        scene.mapProgress += 20;
+        scene.mapProgress += 10;
     }
 
     // Must be last!
