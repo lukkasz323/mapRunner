@@ -46,7 +46,6 @@ export class Character {
         return true;
     }
     loot(loot) {
-        // Transfter until loot empty
         while (loot.length !== 0) {
             this.tryTransferItemToInventory(loot, 0);
         }

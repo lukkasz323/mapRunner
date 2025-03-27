@@ -87,7 +87,7 @@ function renderStats(ctx: CanvasRenderingContext2D, scene: Scene) {
 
 function renderProgressBars(ctx: CanvasRenderingContext2D, scene: Scene) {
     renderProgressBar(ctx, {x: 0, y: 0}, {x: ctx.canvas.width, y: 20}, scene.character.xp.quantity, scene.character.xpRequired, "gold", "gray"); // XP
-    renderProgressBar(ctx, {x: 224, y: 66}, {x: 256, y: 16}, scene.mapProgress, 100, "blue", "gray"); // xd
+    renderProgressBar(ctx, {x: 450, y: 66}, {x: 256, y: 16}, scene.mapProgress, 100, "blue", "gray"); // Map
 }
 
 function renderProgressBar(ctx: CanvasRenderingContext2D, origin: Vector2, size: Vector2, current: number, max: number, colorProgress: string, colorBackground: string) {
