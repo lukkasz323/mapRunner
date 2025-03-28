@@ -7,6 +7,7 @@ export class Scene {
     fpsCounter = new FPSCounter();
     ticks = 0;
     character = new Character("Hero");
+    loot = [];
     ui = new UI(this);
     map = new MapItem();
     mapProgress = 0;

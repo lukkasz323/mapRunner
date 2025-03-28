@@ -17,15 +17,26 @@ function renderDebug(ctx, scene, input) {
     ctx.fillText(input.mouseOrigin.y.toString(), ctx.canvas.width - 40, y += 20);
 }
 function renderUI(ctx, scene) {
+    // Boxes
     for (const box of scene.ui.boxes) {
         renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
         if (box.text) {
             ctx.fillText(box.text, box.origin.x + 4, box.origin.y + FONT_SIZE);
         }
     }
+    // Inv
     for (let i = 0; i < scene.ui.inventory.length; i++) {
         const box = scene.ui.inventory[i];
         const item = scene.character.inventory[i];
+        renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
+        if (item) {
+            ctx.fillText(item.displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
+        }
+    }
+    // Loot
+    for (let i = 0; i < scene.ui.visibleLootSize; i++) {
+        const box = scene.ui.loot[i];
+        const item = scene.loot[i];
         renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
         if (item) {
             ctx.fillText(item.displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
