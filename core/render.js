@@ -42,6 +42,26 @@ function renderUI(ctx, scene) {
             ctx.fillText(item.displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
         }
     }
+    if (scene.loot.length > scene.ui.visibleLootSize) {
+        let x = scene.ui.lootOrigin.x + (scene.ui.boxSize * scene.ui.visibleLootSize) + 8;
+        let y = scene.ui.lootOrigin.y + 8;
+        ctx.fillStyle = "black";
+        ctx.font = `32px ${FONT}`;
+        ctx.fillText("+", x, y + FONT_SIZE);
+    }
+}
+function renderLootPlus(ctx, scene) {
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    let x = scene.ui.lootOrigin.x + (scene.ui.boxSize * scene.ui.visibleLootSize) + 8;
+    let y = scene.ui.lootOrigin.y + 4;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + 16, y);
+    ctx.closePath();
+    ctx.moveTo(x + 8, y - 8);
+    ctx.lineTo(x + 8, y + 8);
+    ctx.stroke();
 }
 function renderStats(ctx, scene) {
     ctx.font = CTX_FONT;

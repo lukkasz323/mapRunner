@@ -37,12 +37,14 @@ export class Character {
     }
 
     tryTransferItemToInventory(container: Item[], itemIndex: number): boolean {
-        const transferedItem: Item = container.splice(itemIndex, 1)[0];
+        const transferedItem: Item = container[itemIndex];
+        
         const invItem = this.inventory.find(invItem => invItem.displayName === transferedItem.displayName);
-
         if (invItem && "quantity" in transferedItem) {
+            container.splice(itemIndex, 1)[0];
             (invItem as IQuantity).quantity += (transferedItem as IQuantity).quantity;
         } else if (this.inventoryHasSpace()) {
+            container.splice(itemIndex, 1)[0];
             this.inventory.push(transferedItem);
         } else {
             return false;

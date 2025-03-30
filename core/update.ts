@@ -10,6 +10,10 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
         scene.fpsCounter.update(deltaTime);
         console.log(scene.fpsCounter.calculateAverage());
     }
+    if (input.keys.get("Digit1")) scene.mapSpeed = 1;
+    if (input.keys.get("Digit2")) scene.mapSpeed = 2;
+    if (input.keys.get("Digit3")) scene.mapSpeed = 4;
+    if (input.keys.get("Digit4")) scene.mapSpeed = 32;
 
     // UI
     if (input.isMouseDown && !input.singleClickLock) {
@@ -54,7 +58,7 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
         // scene.character.tryLevelUp();
     }
     if (scene.isMapActive) {
-        scene.mapProgress += 1;
+        scene.mapProgress += scene.mapSpeed;
     }
 
     // Must be last!

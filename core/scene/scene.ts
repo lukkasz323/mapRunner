@@ -12,6 +12,7 @@ export class Scene {
     ui = new UI(this);
     map = new MapItem();
     mapProgress = 0;
+    mapSpeed = 1;
     isMapActive = true;
 
     constructor(private canvas: HTMLCanvasElement) {
