@@ -33,7 +33,7 @@ function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
         }
     }
     
-    // Inv
+    // Player Inv
     for (let i = 0; i < scene.ui.inventory.length; i++) {
         const box = scene.ui.inventory[i];
         const item = scene.character.inventory.items[i];
@@ -44,18 +44,21 @@ function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
         }
     }
 
-    // Loot
+    // Map Loot
     for (let i = 0; i < scene.ui.visibleLootSize; i++) {
         const box = scene.ui.loot[i];
-        const item = scene.loot[i];
+        const item = scene.loot.items[i];
 
         renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
         if (item) {
             ctx.fillText(item.displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
+            if ("quantity" in item) {
+                ctx.fillText(`${(item as IQuantity).quantity}`, box.origin.x + 4, box.origin.y + (FONT_SIZE * 2));
+            }
         }
     }
 
-    if (scene.loot.length > scene.ui.visibleLootSize) {
+    if (scene.loot.items.length > scene.ui.visibleLootSize) {
         let x = scene.ui.lootOrigin.x + (scene.ui.boxSize * scene.ui.visibleLootSize) + 8;
         let y = scene.ui.lootOrigin.y + 8;
         ctx.fillStyle = "black";

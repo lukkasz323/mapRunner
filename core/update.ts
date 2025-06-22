@@ -38,7 +38,7 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
         // Loot
         for (let i = 0; i < scene.ui.loot.length; i++) {
             const box = scene.ui.loot[i];
-            const item = scene.loot[i];
+            const item = scene.loot.items[i];
 
             if (item && isRectCollidingWithPoint(box, input.mouseOrigin)) {
                 scene.character.inventory.tryTransferItem(scene.loot, i);
@@ -53,9 +53,9 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
     // Map run  
     if (scene.mapProgress >= 100) {
         scene.mapProgress = 0;
-        scene.loot.push(...scene.map.loot());
-        // scene.character.loot(scene.map.loot()); 
-        // scene.character.tryLevelUp();
+        
+        // scene.loot.items.push(...scene.map.run().items);
+        scene.loot.loot(scene.map.run());
     }
     if (scene.isMapActive) {
         scene.mapProgress += scene.mapSpeed;

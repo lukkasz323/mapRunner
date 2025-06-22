@@ -25,16 +25,16 @@ export function updateGame(scene, input, canvas, deltaTime) {
         for (let i = 0; i < scene.ui.inventory.length; i++) {
             const box = scene.ui.inventory[i];
             if (isRectCollidingWithPoint(box, input.mouseOrigin)) {
-                const item = scene.character.inventory[i];
+                const item = scene.character.inventory.items[i];
                 // TODO: Item selection
             }
         }
         // Loot
         for (let i = 0; i < scene.ui.loot.length; i++) {
             const box = scene.ui.loot[i];
-            const item = scene.loot[i];
+            const item = scene.loot.items[i];
             if (item && isRectCollidingWithPoint(box, input.mouseOrigin)) {
-                scene.character.tryTransferItemToInventory(scene.loot, i);
+                scene.character.inventory.tryTransferItem(scene.loot, i);
                 scene.character.tryLevelUp();
             }
         }
@@ -43,9 +43,8 @@ export function updateGame(scene, input, canvas, deltaTime) {
     // Map run  
     if (scene.mapProgress >= 100) {
         scene.mapProgress = 0;
-        scene.loot.push(...scene.map.loot());
-        // scene.character.loot(scene.map.loot()); 
-        // scene.character.tryLevelUp();
+        // scene.loot.items.push(...scene.map.run().items);
+        scene.loot.loot(scene.map.run());
     }
     if (scene.isMapActive) {
         scene.mapProgress += scene.mapSpeed;

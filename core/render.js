@@ -24,25 +24,28 @@ function renderUI(ctx, scene) {
             ctx.fillText(box.text, box.origin.x + 4, box.origin.y + FONT_SIZE);
         }
     }
-    // Inv
+    // Player Inv
     for (let i = 0; i < scene.ui.inventory.length; i++) {
         const box = scene.ui.inventory[i];
-        const item = scene.character.inventory[i];
+        const item = scene.character.inventory.items[i];
         renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
         if (item) {
             ctx.fillText(item.displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
         }
     }
-    // Loot
+    // Map Loot
     for (let i = 0; i < scene.ui.visibleLootSize; i++) {
         const box = scene.ui.loot[i];
-        const item = scene.loot[i];
+        const item = scene.loot.items[i];
         renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
         if (item) {
             ctx.fillText(item.displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
+            if ("quantity" in item) {
+                ctx.fillText(`${item.quantity}`, box.origin.x + 4, box.origin.y + (FONT_SIZE * 2));
+            }
         }
     }
-    if (scene.loot.length > scene.ui.visibleLootSize) {
+    if (scene.loot.items.length > scene.ui.visibleLootSize) {
         let x = scene.ui.lootOrigin.x + (scene.ui.boxSize * scene.ui.visibleLootSize) + 8;
         let y = scene.ui.lootOrigin.y + 8;
         ctx.fillStyle = "black";
@@ -90,8 +93,8 @@ function renderStats(ctx, scene) {
     x += 180;
     y = 530;
     ctx.fillText(`Inventory:`, x, y += 20);
-    for (let i = 0; i < scene.character.inventory.length; i++) {
-        const item = scene.character.inventory[i];
+    for (let i = 0; i < scene.character.inventory.items.length; i++) {
+        const item = scene.character.inventory.items[i];
         const text = "quantity" in item ? `${item.displayName} ${item.quantity}` : item.displayName;
         ctx.font = `12px ${FONT}`;
         ctx.fillText(text, x, y += 10);
