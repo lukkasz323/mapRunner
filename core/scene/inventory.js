@@ -9,25 +9,43 @@ export class Inventory {
     inventoryHasSpace() {
         return this.items.length < this.getMaxInvLength();
     }
-    tryTransferItem(inventory, itemIndex) {
-        const transferedItem = inventory.items[itemIndex];
-        const invItem = this.items.find(invItem => invItem.displayName === transferedItem.displayName);
-        if (invItem && "quantity" in transferedItem) {
-            inventory.items.splice(itemIndex, 1)[0];
-            invItem.quantity += transferedItem.quantity;
+    tryAddItem(item) {
+        const invItem = this.items.find(invItem => invItem.displayName === item.displayName);
+        if (invItem && "quantity" in item) {
+            invItem.quantity += item.quantity;
         }
         else if (this.inventoryHasSpace()) {
-            inventory.items.splice(itemIndex, 1)[0];
-            this.items.push(transferedItem);
+            this.items.push(item);
         }
         else {
             return false;
         }
         return true;
     }
-    loot(loot) {
-        while (loot.items.length !== 0) {
-            this.tryTransferItem(loot, 0);
+    tryTransferItem(transferInv, transferedIndex) {
+        const transferedItem = transferInv.items[transferedIndex];
+        if (this.tryAddItem(transferedItem)) { // ADD
+            transferInv.items.splice(transferedIndex, 1); // REMOVE
+            return true;
         }
+        ;
+        return false;
+    }
+    loot(loot) {
+        const initialLootSize = loot.items.length;
+        let transferCount = 0;
+        while (loot.items.length !== 0) {
+            const wasTransfered = this.tryTransferItem(loot, 0);
+            if (wasTransfered) {
+                transferCount++;
+            }
+            if (!wasTransfered) {
+                break;
+            }
+        }
+        if (transferCount === initialLootSize) {
+            return true; // All items were transfered
+        }
+        return false; // Some or all items were lost, due to inventory being full
     }
 }

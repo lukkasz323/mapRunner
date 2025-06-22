@@ -54,7 +54,6 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
     if (scene.mapProgress >= 100) {
         scene.mapProgress = 0;
         
-        // scene.loot.items.push(...scene.map.run().items);
         scene.loot.loot(scene.map.run());
     }
     if (scene.isMapActive) {
@@ -63,6 +62,7 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
 
     // Must be last!
     scene.ticks++;
+    
     if (loop) {
         return true;
     }

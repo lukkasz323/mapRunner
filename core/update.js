@@ -43,7 +43,6 @@ export function updateGame(scene, input, canvas, deltaTime) {
     // Map run  
     if (scene.mapProgress >= 100) {
         scene.mapProgress = 0;
-        // scene.loot.items.push(...scene.map.run().items);
         scene.loot.loot(scene.map.run());
     }
     if (scene.isMapActive) {
