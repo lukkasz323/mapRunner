@@ -29,7 +29,7 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
             const box = scene.ui.inventory[i];
             
             if (isRectCollidingWithPoint(box, input.mouseOrigin)) {
-                const item = scene.character.inventory[i];
+                const item = scene.character.inventory.items[i];
 
                 // TODO: Item selection
             }
@@ -41,7 +41,7 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
             const item = scene.loot[i];
 
             if (item && isRectCollidingWithPoint(box, input.mouseOrigin)) {
-                scene.character.tryTransferItemToInventory(scene.loot, i);
+                scene.character.inventory.tryTransferItem(scene.loot, i);
                 scene.character.tryLevelUp();
             }
             

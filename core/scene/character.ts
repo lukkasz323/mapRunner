@@ -1,4 +1,5 @@
 import { Vector2 } from "../../utils/vector2.js";
+import { Inventory } from "./inventory.js";
 import { IQuantity } from "./items/iQuantity.js";
 import { Item } from "./items/item.js";
 import { Xp } from "./items/xp.js";
@@ -11,8 +12,8 @@ export class Character {
     dex = 10;
     int = 10;
     health = 100;
-    inventory: Item[] = [];
-    invSize: Vector2 = {x: 8, y: 5};
+    inventory: Inventory = new Inventory();
+    
     mainHand: Item = null;
     offHand: Item = null;
     bodyarmor: Item = null;
@@ -25,63 +26,8 @@ export class Character {
     rightRing: Item = null;
     constructor(public name: string) {
         this.xp = new Xp(0);
-        this.inventory.push(this.xp);
-    }
-
-    getMaxInvLength() {
-        return this.invSize.x * this.invSize.y;
-    }
-
-    inventoryHasSpace() {
-        return this.inventory.length < this.getMaxInvLength();
-    }
-
-    tryTransferItemToInventory(container: Item[], itemIndex: number): boolean {
-        const transferedItem: Item = container[itemIndex];
-        
-        const invItem = this.inventory.find(invItem => invItem.displayName === transferedItem.displayName);
-        if (invItem && "quantity" in transferedItem) {
-            container.splice(itemIndex, 1)[0];
-            (invItem as IQuantity).quantity += (transferedItem as IQuantity).quantity;
-        } else if (this.inventoryHasSpace()) {
-            container.splice(itemIndex, 1)[0];
-            this.inventory.push(transferedItem);
-        } else {
-            return false;
-        }
-
-        return true;
-    }
-
-    loot(loot: Item[]) {
-        while (loot.length !== 0) {
-            this.tryTransferItemToInventory(loot, 0);
-        }
-
-        // let addObject = false;
-
-        // for (const lootItem of loot) {
-        //     console.log(loot);
-        //     if ("quantity" in lootItem && typeof lootItem.quantity === "number") {
-        //         const invItemIndex = this.inventory.findIndex(invItem => invItem.displayName === lootItem.displayName);
-        //         if (invItemIndex !== -1) {
-        //             // Remove item from loot, and add IT'S QUANTITY to existing inventory item.
-        //             loot.splice(loot.findIndex(item => item.displayName === lootItem.displayName), 1);
-        //             (this.inventory[invItemIndex] as IQuantity).quantity += lootItem.quantity;
-        //         } else {
-        //             addObject = true;
-        //         }
-        //     } else {
-        //         addObject = true
-        //     }
-
-        //     if (addObject && this.inventory.length < this.getInvLength()) {
-        //         // Remove item from loot, and add IT to inventory.
-        //         loot.splice(loot.findIndex(item => item.displayName === lootItem.displayName), 1);
-        //         this.inventory.push(lootItem);
-        //     }
-        // }
-        // console.log(1);
+        this.inventory.items.push(this.xp);
+        this.inventory
     }
 
     tryLevelUp() {

@@ -24,6 +24,7 @@ export class Character {
         this.name = name;
         this.xp = new Xp(0);
         this.inventory.push(this.xp);
+        this.inventory;
     }
     getMaxInvLength() {
         return this.invSize.x * this.invSize.y;

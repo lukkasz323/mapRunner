@@ -36,7 +36,7 @@ function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
     // Inv
     for (let i = 0; i < scene.ui.inventory.length; i++) {
         const box = scene.ui.inventory[i];
-        const item = scene.character.inventory[i];
+        const item = scene.character.inventory.items[i];
 
         renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
         if (item) {
@@ -110,8 +110,8 @@ function renderStats(ctx: CanvasRenderingContext2D, scene: Scene) {
     x += 180;
     y = 530;
     ctx.fillText(`Inventory:`, x, y += 20);
-    for (let i = 0; i < scene.character.inventory.length; i++) {
-        const item = scene.character.inventory[i];
+    for (let i = 0; i < scene.character.inventory.items.length; i++) {
+        const item = scene.character.inventory.items[i];
         
         const text = "quantity" in item ? `${item.displayName} ${(item as IQuantity).quantity}` : item.displayName;
         ctx.font = `12px ${FONT}`;
