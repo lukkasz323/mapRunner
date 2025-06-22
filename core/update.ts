@@ -16,37 +16,36 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
     if (input.keys.get("Digit4")) scene.mapSpeed = 32;
 
     // UI
-    if (input.isMouseDown && !input.singleClickLock) {
+    if (!input.singleClickLock) {
+        if (input.isMouseDownLeft) {
+            // Run map button
+            if (isRectCollidingWithPoint(scene.ui.runMapButton, input.mouseOrigin)) {
+                scene.isMapActive = !scene.isMapActive;
+                scene.ui.runMapButton.text = scene.isMapActive ? "Pause Map" : "Run Map";
+            }
 
-        // Run map button
-        if (isRectCollidingWithPoint(scene.ui.runMapButton, input.mouseOrigin)) {
-            scene.isMapActive = !scene.isMapActive;
-            scene.ui.runMapButton.text = scene.isMapActive ? "Pause Map" : "Run Map";
-        }
+            // Loot
+            for (let i = 0; i < scene.ui.loot.length; i++) {
+                const box = scene.ui.loot[i];
+                const item = scene.loot.items[i];
 
-        // Inv
-        for (let i = 0; i < scene.ui.inventory.length; i++) {
-            const box = scene.ui.inventory[i];
-            
-            if (isRectCollidingWithPoint(box, input.mouseOrigin)) {
-                const item = scene.character.inventory.items[i];
-
-                // TODO: Item selection
+                if (item && isRectCollidingWithPoint(box, input.mouseOrigin)) {
+                    scene.character.bag.tryTransferItem(scene.loot, i);
+                    scene.character.tryLevelUp();
+                }
+                
             }
         }
-
-        // Loot
-        for (let i = 0; i < scene.ui.loot.length; i++) {
-            const box = scene.ui.loot[i];
-            const item = scene.loot.items[i];
-
-            if (item && isRectCollidingWithPoint(box, input.mouseOrigin)) {
-                scene.character.inventory.tryTransferItem(scene.loot, i);
-                scene.character.tryLevelUp();
+        if (input.isMouseDownRight) {
+            // Item equip
+            for (let i = 0; i < scene.ui.inventory.length; i++) {
+                const box = scene.ui.inventory[i];
+                
+                if (isRectCollidingWithPoint(box, input.mouseOrigin)) {
+                    scene.character.swapEquipment(i);
+                }
             }
-            
         }
-
         input.singleClickLock = true;
     }
 

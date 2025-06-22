@@ -10,8 +10,8 @@ export class UI {
     loot = [];
     constructor(scene) {
         this.boxes.push(this.runMapButton);
-        for (let y = 0; y < scene.character.inventory.size.y; y++) {
-            for (let x = 0; x < scene.character.inventory.size.x; x++) {
+        for (let y = 0; y < scene.character.bag.size.y; y++) {
+            for (let x = 0; x < scene.character.bag.size.x; x++) {
                 this.inventory.push(new Box({ x: this.invOrigin.x + (x * this.boxSize), y: this.invOrigin.y + (y * this.boxSize) }, { x: this.boxSize, y: this.boxSize }));
             }
         }

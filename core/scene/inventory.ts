@@ -1,5 +1,5 @@
 import { Vector2 } from "../../utils/vector2.js";
-import { IQuantity } from "./items/iQuantity.js";
+import { IQuantity } from "./items/i-quantity.js";
 import { Item } from "./items/item.js";
 
 export class Inventory {
@@ -17,6 +17,10 @@ export class Inventory {
             return true;
         }
         return this.items.length < this.getMaxInvLength();
+    }
+
+    removeItemAt(index: number): Item {
+        return this.items.splice(index, 1)[0];
     }
 
     tryAddItem(item: Item): boolean {

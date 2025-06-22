@@ -24,7 +24,7 @@ function renderUI(ctx, scene) {
     // Player Inv
     for (let i = 0; i < scene.ui.inventory.length; i++) {
         const box = scene.ui.inventory[i];
-        const item = scene.character.inventory.items[i];
+        const item = scene.character.bag.items[i];
         renderItemWithBox(ctx, box, item);
     }
     // Map Loot

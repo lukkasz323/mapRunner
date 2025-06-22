@@ -1,0 +1,15 @@
+export enum ItemType {
+    Sword,
+    Bow,
+    Wand,
+    BodyArmor,
+    Helmet,
+    Boots,
+    Gloves,
+    Belt,
+    Amulet,
+    Ring,
+    Gold,
+    Xp,
+    Consumable,
+}

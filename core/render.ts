@@ -3,7 +3,7 @@ import { Vector2 } from "../utils/vector2.js";
 import { CTX_FONT, FONT, FONT_SIZE } from "./constants.js";
 import { Input } from "./scene/input.js";
 import { Scene } from "./scene/scene.js";
-import { IQuantity } from "./scene/items/iQuantity.js";
+import { IQuantity } from "./scene/items/i-quantity.js";
 import { Box } from "./scene/ui/box.js";
 import { Item } from "./scene/items/item.js";
 
@@ -35,7 +35,7 @@ function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
     // Player Inv
     for (let i = 0; i < scene.ui.inventory.length; i++) {
         const box = scene.ui.inventory[i];
-        const item = scene.character.inventory.items[i];
+        const item = scene.character.bag.items[i];
 
         renderItemWithBox(ctx, box, item);
     }
