@@ -9,7 +9,7 @@ export class Character {
     dex = 10;
     int = 10;
     health = 100;
-    inventory = new Inventory();
+    inventory = new Inventory({ x: 8, y: 8 });
     mainHand = null;
     offHand = null;
     bodyarmor = null;

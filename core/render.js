@@ -19,19 +19,13 @@ function renderDebug(ctx, scene, input) {
 function renderUI(ctx, scene) {
     // Boxes
     for (const box of scene.ui.boxes) {
-        renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
-        if (box.text) {
-            ctx.fillText(box.text, box.origin.x + 4, box.origin.y + FONT_SIZE);
-        }
+        renderBox(ctx, box);
     }
     // Player Inv
     for (let i = 0; i < scene.ui.inventory.length; i++) {
         const box = scene.ui.inventory[i];
         const item = scene.character.inventory.items[i];
-        renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
-        if (item) {
-            ctx.fillText(item.displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
-        }
+        renderItemWithBox(ctx, box, item);
     }
     // Map Loot
     for (let i = 0; i < scene.ui.visibleLootSize; i++) {
@@ -51,6 +45,21 @@ function renderUI(ctx, scene) {
         ctx.fillStyle = "black";
         ctx.font = `32px ${FONT}`;
         ctx.fillText("+", x, y + FONT_SIZE);
+    }
+}
+function renderBox(ctx, box) {
+    renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
+    if (box.text) {
+        ctx.fillText(box.text, box.origin.x + 4, box.origin.y + FONT_SIZE);
+    }
+}
+function renderItemWithBox(ctx, box, item) {
+    renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
+    if (item) {
+        ctx.fillText(item.displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
+        if ("quantity" in item) {
+            ctx.fillText(`${item.quantity}`, box.origin.x + 4, box.origin.y + (FONT_SIZE * 2));
+        }
     }
 }
 function renderLootPlus(ctx, scene) {
@@ -90,19 +99,20 @@ function renderStats(ctx, scene) {
     renderRect(ctx, "gray", "black", x + 96, y, 64, 64); // Boots
     renderRect(ctx, "gray", "black", x - 48, y - 48, 32, 32); // Left Ring
     renderRect(ctx, "gray", "black", x + 80, y - 48, 32, 32); // Right Ring
-    x += 180;
-    y = 530;
-    ctx.fillText(`Inventory:`, x, y += 20);
-    for (let i = 0; i < scene.character.inventory.items.length; i++) {
-        const item = scene.character.inventory.items[i];
-        const text = "quantity" in item ? `${item.displayName} ${item.quantity}` : item.displayName;
-        ctx.font = `12px ${FONT}`;
-        ctx.fillText(text, x, y += 10);
-        if (i !== 0 && i % 25 === 0) {
-            x += 80;
-            y = 550;
-        }
-    }
+    // OLD TEXT INVENTORY
+    // x += 180;
+    // y = 530;
+    // ctx.fillText(`Inventory:`, x, y += 20);
+    // for (let i = 0; i < scene.character.inventory.items.length; i++) {
+    //     const item = scene.character.inventory.items[i];
+    //     const text = "quantity" in item ? `${item.displayName} ${(item as IQuantity).quantity}` : item.displayName;
+    //     ctx.font = `12px ${FONT}`;
+    //     ctx.fillText(text, x, y += 10);
+    //     if (i !== 0 && i % 25 === 0) {
+    //         x += 80;
+    //         y = 550;
+    //     }
+    // }
 }
 function renderProgressBars(ctx, scene) {
     renderProgressBar(ctx, { x: 0, y: 0 }, { x: ctx.canvas.width, y: 20 }, scene.character.xp.quantity, scene.character.xpRequired, "gold", "gray"); // XP

@@ -1,12 +1,16 @@
 export class Inventory {
+    size;
     items = [];
-    size = { x: 8, y: 5 };
-    constructor() {
+    constructor(size = null) {
+        this.size = size;
     }
     getMaxInvLength() {
         return this.size.x * this.size.y;
     }
     inventoryHasSpace() {
+        if (!this.size) {
+            return true;
+        }
         return this.items.length < this.getMaxInvLength();
     }
     tryAddItem(item) {
@@ -35,11 +39,11 @@ export class Inventory {
         const initialLootSize = loot.items.length;
         let transferCount = 0;
         while (loot.items.length !== 0) {
-            const wasTransfered = this.tryTransferItem(loot, 0);
-            if (wasTransfered) {
+            const wasItemTransfered = this.tryTransferItem(loot, 0);
+            if (wasItemTransfered) {
                 transferCount++;
             }
-            if (!wasTransfered) {
+            if (!wasItemTransfered) {
                 break;
             }
         }

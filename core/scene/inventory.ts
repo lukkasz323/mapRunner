@@ -1,13 +1,11 @@
 import { Vector2 } from "../../utils/vector2.js";
 import { IQuantity } from "./items/iQuantity.js";
 import { Item } from "./items/item.js";
-import { Xp } from "./items/xp.js";
 
 export class Inventory {
     items: Item[] = [];
-    size: Vector2 = {x: 8, y: 5};
 
-    constructor() {
+    constructor(public size: Vector2 = null) {
     }
 
     getMaxInvLength() {
@@ -15,6 +13,9 @@ export class Inventory {
     }
 
     inventoryHasSpace() {
+        if (!this.size) {
+            return true;
+        }
         return this.items.length < this.getMaxInvLength();
     }
 
@@ -50,11 +51,11 @@ export class Inventory {
         let transferCount = 0;
 
         while (loot.items.length !== 0) {
-            const wasTransfered: boolean = this.tryTransferItem(loot, 0);
-            if (wasTransfered) {
+            const wasItemTransfered: boolean = this.tryTransferItem(loot, 0);
+            if (wasItemTransfered) {
                 transferCount++;
             }
-            if (!wasTransfered) {
+            if (!wasItemTransfered) {
                 break;
             }
         }

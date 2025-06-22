@@ -4,6 +4,8 @@ import { CTX_FONT, FONT, FONT_SIZE } from "./constants.js";
 import { Input } from "./scene/input.js";
 import { Scene } from "./scene/scene.js";
 import { IQuantity } from "./scene/items/iQuantity.js";
+import { Box } from "./scene/ui/box.js";
+import { Item } from "./scene/items/item.js";
 
 export function renderGame(scene: Scene, input: Input, canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext("2d");
@@ -27,10 +29,7 @@ function renderDebug(ctx: CanvasRenderingContext2D, scene: Scene, input: Input) 
 function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
     // Boxes
     for (const box of scene.ui.boxes) {
-        renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
-        if (box.text) {
-            ctx.fillText(box.text, box.origin.x + 4, box.origin.y + FONT_SIZE);
-        }
+        renderBox(ctx, box);
     }
     
     // Player Inv
@@ -38,10 +37,7 @@ function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
         const box = scene.ui.inventory[i];
         const item = scene.character.inventory.items[i];
 
-        renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
-        if (item) {
-            ctx.fillText(item.displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
-        }
+        renderItemWithBox(ctx, box, item);
     }
 
     // Map Loot
@@ -66,6 +62,23 @@ function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
         ctx.fillText("+", x, y + FONT_SIZE);
     }
     
+}
+
+function renderBox(ctx: CanvasRenderingContext2D, box: Box) {
+    renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
+    if (box.text) {
+        ctx.fillText(box.text, box.origin.x + 4, box.origin.y + FONT_SIZE);
+    }
+}
+
+function renderItemWithBox(ctx: CanvasRenderingContext2D, box: Box, item: Item) {
+    renderRect(ctx, "gray", "black", box.origin.x, box.origin.y, box.size.x, box.size.y);
+    if (item) {
+        ctx.fillText(item.displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
+        if ("quantity" in item) {
+            ctx.fillText(`${(item as IQuantity).quantity}`, box.origin.x + 4, box.origin.y + (FONT_SIZE * 2));
+        }
+    }
 }
 
 function renderLootPlus(ctx: CanvasRenderingContext2D, scene: Scene) {
@@ -110,21 +123,22 @@ function renderStats(ctx: CanvasRenderingContext2D, scene: Scene) {
     renderRect(ctx, "gray", "black", x - 48 , y - 48, 32, 32); // Left Ring
     renderRect(ctx, "gray", "black", x + 80 , y - 48, 32, 32); // Right Ring
 
-    x += 180;
-    y = 530;
-    ctx.fillText(`Inventory:`, x, y += 20);
-    for (let i = 0; i < scene.character.inventory.items.length; i++) {
-        const item = scene.character.inventory.items[i];
+    // OLD TEXT INVENTORY
+    // x += 180;
+    // y = 530;
+    // ctx.fillText(`Inventory:`, x, y += 20);
+    // for (let i = 0; i < scene.character.inventory.items.length; i++) {
+    //     const item = scene.character.inventory.items[i];
         
-        const text = "quantity" in item ? `${item.displayName} ${(item as IQuantity).quantity}` : item.displayName;
-        ctx.font = `12px ${FONT}`;
-        ctx.fillText(text, x, y += 10);
+    //     const text = "quantity" in item ? `${item.displayName} ${(item as IQuantity).quantity}` : item.displayName;
+    //     ctx.font = `12px ${FONT}`;
+    //     ctx.fillText(text, x, y += 10);
 
-        if (i !== 0 && i % 25 === 0) {
-            x += 80;
-            y = 550;
-        }
-    }
+    //     if (i !== 0 && i % 25 === 0) {
+    //         x += 80;
+    //         y = 550;
+    //     }
+    // }
 }
 
 function renderProgressBars(ctx: CanvasRenderingContext2D, scene: Scene) {

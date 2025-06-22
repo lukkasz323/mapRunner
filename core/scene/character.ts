@@ -12,7 +12,7 @@ export class Character {
     dex = 10;
     int = 10;
     health = 100;
-    inventory: Inventory = new Inventory();
+    inventory: Inventory = new Inventory({x: 8, y: 8});
     
     mainHand: Item = null;
     offHand: Item = null;
