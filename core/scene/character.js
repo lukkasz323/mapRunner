@@ -1,32 +1,30 @@
-import { NOT_IMPLEMENTED } from "../constants.js";
-import { Inventory } from "./inventory.js";
-import { ItemType } from "./items/item-type.js";
-import { Xp } from "./items/xp.js";
+import { Inventory } from './inventory.js';
+import { EquipmentSlotByItemType } from './items/equipment-slot-by-item-type.js';
+import { Xp } from './items/xp.js';
 export class Character {
     name;
     level = 1;
-    xp;
+    xp = new Xp(0);
     xpRequired = 10;
     str = 10;
     dex = 10;
     int = 10;
     health = 100;
     bag = new Inventory({ x: 8, y: 8 });
-    mainHand = null;
-    offHand = null;
-    bodyarmor = null;
-    helmet = null;
-    boots = null;
-    gloves = null;
-    belt = null;
-    amulet = null;
-    leftRing = null;
-    rightRing = null;
+    equipment = new Map();
+    // mainHand: Item = null;
+    // offHand: Item = null;
+    // bodyarmor: Item = null;
+    // helmet: Item = null;
+    // boots: Item = null;
+    // gloves: Item = null;
+    // belt: Item = null;
+    // amulet: Item = null;
+    // leftRing: Item = null;
+    // rightRing: Item = null;
     constructor(name) {
         this.name = name;
-        this.xp = new Xp(0);
-        this.bag.items.push(this.xp);
-        this.bag;
+        this.bag.tryAddItem(this.xp);
     }
     tryLevelUp() {
         if (this.xp.quantity >= this.xpRequired) {
@@ -41,45 +39,30 @@ export class Character {
             this.tryLevelUp();
         }
     }
-    unequipEquipment(itemType) {
-        let item;
-        switch (itemType) {
-            case ItemType.Sword:
-            case ItemType.Bow:
-            case ItemType.Wand:
-                item = this.mainHand;
-                this.mainHand = null;
-                break;
-            case ItemType.Helmet:
-                item = this.helmet;
-                this.helmet = null;
-                break;
-            default:
-                throw new Error(NOT_IMPLEMENTED);
+    tryUnequip(equipmentSlot) {
+        if (this.bag.tryAddItem(this.equipment.get(equipmentSlot))) {
+            this.equipment.set(equipmentSlot, null);
+            return true; // Space available
         }
+        return false; // Bag full
     }
     swapEquipment(bagItemIndex) {
-        const bagItem = this.bag.removeItemAt(bagItemIndex);
-        switch (bagItem.type) {
-            case ItemType.Sword:
-            case ItemType.Bow:
-            case ItemType.Wand:
-                if (this.mainHand) {
-                    if (this.bag.tryAddItem(this.mainHand)) {
-                        this.mainHand = bagItem;
-                    }
+        const bagItem = this.bag.items[bagItemIndex];
+        if (bagItem) {
+            const slot = EquipmentSlotByItemType.get(bagItem.$type);
+            if (slot) {
+                const equippedItem = this.equipment.get(slot);
+                if (equippedItem) {
+                    // Swap
+                    this.bag.items.splice(bagItemIndex, 1, equippedItem);
+                    this.equipment.set(slot, bagItem);
                 }
-                break;
-            case ItemType.Helmet:
-                if (this.helmet) {
-                    if (this.bag.tryAddItem(this.helmet)) {
-                        this.helmet = bagItem;
-                    }
+                else {
+                    // Just equip
+                    this.equipment.set(slot, bagItem);
+                    this.bag.removeItemAt(bagItemIndex);
                 }
-                this.helmet = null;
-                break;
-            default:
-                throw new Error(NOT_IMPLEMENTED);
+            }
         }
     }
 }

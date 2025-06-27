@@ -1,4 +1,4 @@
-import { Vector2 } from "../../utils/vector2.js";
+import { Vector2 } from '../../utils/vector2.js';
 
 export class Input {
     mouseOrigin: Vector2;
@@ -17,12 +17,12 @@ export class Input {
     }
 
     addEventListeners() {
-        this.canvas.addEventListener("mousemove", (event: PointerEvent) => this.#onMouseMove(event));
-        this.canvas.addEventListener("mousedown", (event: PointerEvent) => this.#onMouseDown(event));
-        this.canvas.addEventListener("mouseup", (event: PointerEvent) => this.#onMouseUp(event));
-        document.addEventListener("keydown", (event: KeyboardEvent) => this.#onKeyDown(event));
-        document.addEventListener("keyup", (event: KeyboardEvent) => this.#onKeyUp(event));
-        this.canvas.addEventListener("contextmenu", (event: PointerEvent) => this.#onContextMenu(event));
+        this.canvas.addEventListener('mousemove', (event: PointerEvent) => this.#onMouseMove(event));
+        this.canvas.addEventListener('mousedown', (event: PointerEvent) => this.#onMouseDown(event));
+        this.canvas.addEventListener('mouseup', (event: PointerEvent) => this.#onMouseUp(event));
+        document.addEventListener('keydown', (event: KeyboardEvent) => this.#onKeyDown(event));
+        document.addEventListener('keyup', (event: KeyboardEvent) => this.#onKeyUp(event));
+        this.canvas.addEventListener('contextmenu', (event: PointerEvent) => this.#onContextMenu(event));
     }
 
     #onMouseMove(e: PointerEvent): void {

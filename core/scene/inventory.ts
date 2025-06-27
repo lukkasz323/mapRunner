@@ -1,6 +1,6 @@
-import { Vector2 } from "../../utils/vector2.js";
-import { IQuantity } from "./items/i-quantity.js";
-import { Item } from "./items/item.js";
+import { Vector2 } from '../../utils/vector2.js';
+import { IQuantity } from './items/i-quantity.js';
+import { Item } from './items/item.js';
 
 export class Inventory {
     items: Item[] = [];
@@ -24,13 +24,12 @@ export class Inventory {
     }
 
     tryAddItem(item: Item): boolean {
-        const invItem = this.items.find(invItem => invItem.displayName === item.displayName);
-        if (invItem && "quantity" in item) {
+        const invItem = this.items.find(invItem => invItem.$displayName === item.$displayName);
+        if (invItem && 'quantity' in item) {
             (invItem as IQuantity).quantity += (item as IQuantity).quantity;
 
         } else if (this.inventoryHasSpace()) {
             this.items.push(item);
-
         } else {
             return false;
         }

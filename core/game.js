@@ -1,7 +1,7 @@
-import { Scene } from "./scene/scene.js";
-import { renderGame } from "./render.js";
-import { updateGame } from "./update.js";
-import { Input } from "./scene/input.js";
+import { Scene } from './scene/scene.js';
+import { renderGame } from './render.js';
+import { updateGame } from './update.js';
+import { Input } from './scene/input.js';
 export class Game {
     canvas;
     scene;

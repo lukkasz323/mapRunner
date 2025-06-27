@@ -1,4 +1,4 @@
-export type ItemType =
+export type EquipmentSlot =
     | 'MainHand'
     | 'OffHand'
     | 'BodyArmor'
@@ -7,7 +7,5 @@ export type ItemType =
     | 'Gloves'
     | 'Belt'
     | 'Amulet'
-    | 'Ring'
-    | 'Gold'
-    | 'Xp'
-    | 'Consumable';
+    | 'LeftRing'
+    | 'RightRing';

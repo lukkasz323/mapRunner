@@ -13,12 +13,12 @@ export class Input {
         console.log(this);
     }
     addEventListeners() {
-        this.canvas.addEventListener("mousemove", (event) => this.#onMouseMove(event));
-        this.canvas.addEventListener("mousedown", (event) => this.#onMouseDown(event));
-        this.canvas.addEventListener("mouseup", (event) => this.#onMouseUp(event));
-        document.addEventListener("keydown", (event) => this.#onKeyDown(event));
-        document.addEventListener("keyup", (event) => this.#onKeyUp(event));
-        this.canvas.addEventListener("contextmenu", (event) => this.#onContextMenu(event));
+        this.canvas.addEventListener('mousemove', (event) => this.#onMouseMove(event));
+        this.canvas.addEventListener('mousedown', (event) => this.#onMouseDown(event));
+        this.canvas.addEventListener('mouseup', (event) => this.#onMouseUp(event));
+        document.addEventListener('keydown', (event) => this.#onKeyDown(event));
+        document.addEventListener('keyup', (event) => this.#onKeyUp(event));
+        this.canvas.addEventListener('contextmenu', (event) => this.#onContextMenu(event));
     }
     #onMouseMove(e) {
         const canvasBoundingClientRect = this.canvas.getBoundingClientRect();

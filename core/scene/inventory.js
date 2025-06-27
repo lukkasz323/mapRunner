@@ -17,8 +17,8 @@ export class Inventory {
         return this.items.splice(index, 1)[0];
     }
     tryAddItem(item) {
-        const invItem = this.items.find(invItem => invItem.displayName === item.displayName);
-        if (invItem && "quantity" in item) {
+        const invItem = this.items.find(invItem => invItem.$displayName === item.$displayName);
+        if (invItem && 'quantity' in item) {
             invItem.quantity += item.quantity;
         }
         else if (this.inventoryHasSpace()) {
