@@ -49,7 +49,27 @@ export class Character {
     swapEquipment(bagItemIndex) {
         const bagItem = this.bag.items[bagItemIndex];
         if (bagItem) {
-            const slot = EquipmentSlotByItemType.get(bagItem.$type);
+            let slot;
+            // Handle multi-slots first
+            if (bagItem.$type === 'Ring') {
+                // If only left occupied
+                if (this.equipment.has('LeftRing') && !this.equipment.has('RightRing')) {
+                    slot = 'RightRing';
+                }
+                // If only right occupied
+                else if (this.equipment.has('RightRing')) {
+                    slot = 'LeftRing';
+                }
+                // Default if both are empty
+                else {
+                    slot = EquipmentSlotByItemType.get('Ring');
+                }
+            }
+            // Else treat as a single-slot
+            else {
+                slot = EquipmentSlotByItemType.get(bagItem.$type);
+            }
+            // Swap or equip
             if (slot) {
                 const equippedItem = this.equipment.get(slot);
                 if (equippedItem) {
