@@ -37,12 +37,19 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
             }
         }
         if (input.isMouseDownRight) {
-            // Item equip
+            // Equipment
+            // --- Equip
             for (let i = 0; i < scene.ui.inventory.length; i++) {
                 const bagItemBox = scene.ui.inventory[i];
                 
                 if (isRectCollidingWithPoint(bagItemBox, input.mouseOrigin)) {
                     scene.character.swapEquipment(i);
+                }
+            }
+            // --- Uneqip
+            for (const [slot, box] of scene.ui.equipment.entries()) {
+                if (isRectCollidingWithPoint(box, input.mouseOrigin)) {
+                    scene.character.tryUnequip(slot);
                 }
             }
         }

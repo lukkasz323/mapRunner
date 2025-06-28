@@ -9,6 +9,8 @@ import { Boots } from './items/boots.js';
 import { Amulet } from './items/amulet.js';
 import { Belt } from './items/belt.js';
 import { Ring } from './items/ring.js';
+import { Chainmail } from './items/chainmail.js';
+import { Helmet } from './items/helmet.js';
 export class MapItem {
     tier = 1;
     run() {
@@ -17,6 +19,8 @@ export class MapItem {
         loot.tryAddItem(new Gold(Math.ceil(Math.random() * 100)));
         loot.tryAddItem(new Sword());
         loot.tryAddItem(new Bow());
+        loot.tryAddItem(new Chainmail());
+        loot.tryAddItem(new Helmet());
         loot.tryAddItem(new Shield());
         loot.tryAddItem(new Gloves());
         loot.tryAddItem(new Boots());

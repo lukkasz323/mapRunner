@@ -16,16 +16,18 @@ export class Inventory {
     removeItemAt(index) {
         return this.items.splice(index, 1)[0];
     }
-    tryAddItem(item) {
-        const invItem = this.items.find(invItem => invItem.$displayName === item.$displayName);
-        if (invItem && 'quantity' in item) {
-            invItem.quantity += item.quantity;
+    tryAddItem(newItem) {
+        if (!newItem)
+            return false;
+        const invItem = this.items.find(invItem => invItem.$displayName === newItem.$displayName);
+        if (invItem && 'quantity' in newItem) {
+            invItem.quantity += newItem.quantity; // Adding quantity to existing item
         }
         else if (this.inventoryHasSpace()) {
-            this.items.push(item);
+            this.items.push(newItem); // Adding new item
         }
         else {
-            return false;
+            return false; // No space
         }
         return true;
     }

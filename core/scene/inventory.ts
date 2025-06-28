@@ -23,17 +23,17 @@ export class Inventory {
         return this.items.splice(index, 1)[0];
     }
 
-    tryAddItem(item: Item): boolean {
-        const invItem = this.items.find(invItem => invItem.$displayName === item.$displayName);
-        if (invItem && 'quantity' in item) {
-            (invItem as IQuantity).quantity += (item as IQuantity).quantity;
+    tryAddItem(newItem: Item): boolean {
+        if (!newItem) return false;
 
+        const invItem = this.items.find(invItem => invItem.$displayName === newItem.$displayName);
+        if (invItem && 'quantity' in newItem) {
+            (invItem as IQuantity).quantity += (newItem as IQuantity).quantity; // Adding quantity to existing item
         } else if (this.inventoryHasSpace()) {
-            this.items.push(item);
+            this.items.push(newItem); // Adding new item
         } else {
-            return false;
+            return false; // No space
         }
-
         return true;
     }
 
