@@ -53,11 +53,11 @@ export class Character {
             // Handle multi-slots first
             if (bagItem.$type === 'Ring') {
                 // If only left occupied
-                if (this.equipment.has('LeftRing') && !this.equipment.has('RightRing')) {
+                if (this.equipment.get('LeftRing') && !this.equipment.get('RightRing')) {
                     slot = 'RightRing';
                 }
                 // If only right occupied
-                else if (this.equipment.has('RightRing')) {
+                else if (this.equipment.get('RightRing')) {
                     slot = 'LeftRing';
                 }
                 // Default if both are empty
