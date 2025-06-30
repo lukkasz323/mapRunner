@@ -3,5 +3,6 @@
         "module": "ESNext",
         "target": "ESNext",
         "noImplicitAny": true,
+        "strict": true
     },
 }
