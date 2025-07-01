@@ -5,7 +5,7 @@ export class UI {
     lootOrigin = { x: 280, y: 108 };
     visibleLootSize = 8;
     runMapButton = new Box({ x: 350, y: 64 }, { x: 88, y: 24 }, 'Pause Map');
-    tooltipBox = new Box({ x: 30, y: 550 }, { x: 240, y: 260 });
+    tooltipBox = new Box({ x: 30, y: 550 }, { x: 240, y: 260 }, 'Tooltip:');
     tooltipItem = null;
     generic = [];
     items = [];
@@ -14,6 +14,7 @@ export class UI {
     loot = [];
     constructor(scene) {
         this.generic.push(this.runMapButton);
+        this.generic.push(this.tooltipBox);
         // Inventory
         for (let y = 0; y < scene.character.bag.size.y; y++) {
             for (let x = 0; x < scene.character.bag.size.x; x++) {

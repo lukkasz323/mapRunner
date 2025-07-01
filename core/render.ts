@@ -75,8 +75,7 @@ function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
     const tooltipItem: Item|null = scene.ui.tooltipItem;
     x = tooltipBox.origin.x + 10;
     y = tooltipBox.origin.y + FONT_SIZE;
-    
-    renderBox(ctx, scene.ui.tooltipBox)
+
     if (tooltipItem) {
         renderText(ctx, tooltipItem.$displayName, x, y += FONT_SIZE);
         renderText(ctx, tooltipItem.$type, x, y += FONT_SIZE);

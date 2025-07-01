@@ -12,7 +12,7 @@ import { Ring } from './items/ring.js';
 import { Chainmail } from './items/chainmail.js';
 import { Helmet } from './items/helmet.js';
 
-export class MapItem {
+export class MapRunner {
     tier = 1;
 
     run(): Inventory {

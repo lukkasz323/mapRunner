@@ -10,7 +10,7 @@ export class UI {
     lootOrigin: Vector2 = { x: 280, y: 108 };
     visibleLootSize = 8;
     runMapButton: Box = new Box({ x: 350, y: 64 }, { x: 88, y: 24 }, 'Pause Map');
-    tooltipBox: Box = new Box({ x: 30, y: 550 }, { x: 240, y: 260 });
+    tooltipBox: Box = new Box({ x: 30, y: 550 }, { x: 240, y: 260 }, 'Tooltip:');
     tooltipItem: Item|null = null;
     generic: Box[] = [];
     items: Box[] = [];
@@ -20,6 +20,7 @@ export class UI {
 
     constructor(scene: Scene) {
         this.generic.push(this.runMapButton);
+        this.generic.push(this.tooltipBox);
 
         // Inventory
         for (let y = 0; y < scene.character.bag.size.y; y++) {
