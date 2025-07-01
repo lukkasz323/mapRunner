@@ -1,22 +1,20 @@
 import { degreesToRadians } from '../utils/utils.js';
-import { CTX_FONT, FONT, FONT_SIZE } from './constants.js';
+import { BLACK, FONT, FONT_SIZE } from './constants.js';
 export function renderGame(scene, input, canvas) {
     const ctx = canvas.getContext('2d');
     renderBackground(ctx, canvas);
-    renderProgressBars(ctx, scene);
     renderUI(ctx, scene);
-    renderStats(ctx, scene);
     renderDebug(ctx, scene, input);
 }
 function renderDebug(ctx, scene, input) {
-    ctx.font = CTX_FONT;
     // Mouse coordinates
-    ctx.fillStyle = 'black';
     let y = 20;
-    ctx.fillText(input.mouseOrigin.x.toString(), ctx.canvas.width - 40, y += 20);
-    ctx.fillText(input.mouseOrigin.y.toString(), ctx.canvas.width - 40, y += 20);
+    renderText(ctx, input.mouseOrigin.x.toString(), ctx.canvas.width - 40, y += 20);
+    renderText(ctx, input.mouseOrigin.y.toString(), ctx.canvas.width - 40, y += 20);
 }
 function renderUI(ctx, scene) {
+    renderProgressBars(ctx, scene);
+    renderStats(ctx, scene);
     // Boxes
     for (const box of scene.ui.generic) {
         renderBox(ctx, box);
@@ -25,46 +23,48 @@ function renderUI(ctx, scene) {
     for (let i = 0; i < scene.ui.inventory.length; i++) {
         const box = scene.ui.inventory[i];
         const item = scene.character.bag.items[i];
-        renderItemWithBox(ctx, box, item);
+        renderItem(ctx, box, item);
     }
     // Map Loot
     for (let i = 0; i < scene.ui.visibleLootSize; i++) {
         const box = scene.ui.loot[i];
         const item = scene.loot.items[i];
-        renderRect(ctx, 'gray', 'black', box.origin.x, box.origin.y, box.size.x, box.size.y);
+        renderRect(ctx, 'gray', BLACK, box.origin.x, box.origin.y, box.size.x, box.size.y);
         if (item) {
-            ctx.fillText(item.$displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
+            renderText(ctx, item.$displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
             if ('quantity' in item) {
-                ctx.fillText(`${item.quantity}`, box.origin.x + 4, box.origin.y + (FONT_SIZE * 2));
+                renderText(ctx, `${item.quantity}`, box.origin.x + 4, box.origin.y + (FONT_SIZE * 2));
             }
         }
     }
     if (scene.loot.items.length > scene.ui.visibleLootSize) {
         let x = scene.ui.lootOrigin.x + (scene.ui.boxSize * scene.ui.visibleLootSize) + 8;
         let y = scene.ui.lootOrigin.y + 8;
-        ctx.fillStyle = 'black';
-        ctx.font = `32px ${FONT}`;
-        ctx.fillText('+', x, y + FONT_SIZE);
+        renderText(ctx, '+', x, y + FONT_SIZE, BLACK, 32);
     }
-}
-function renderBox(ctx, box) {
-    renderRect(ctx, 'gray', 'black', box.origin.x, box.origin.y, box.size.x, box.size.y);
-    if (box.text) {
-        ctx.fillText(box.text, box.origin.x + 4, box.origin.y + FONT_SIZE);
+    // Equipment
+    let x = 20;
+    let y = 180;
+    renderText(ctx, `Equipment:`, x, y += 20, BLACK, FONT_SIZE, FONT);
+    for (let slot of scene.ui.equipment.keys()) {
+        const box = scene.ui.equipment.get(slot);
+        const item = scene.character.equipment.get(slot);
+        renderItem(ctx, box, item);
     }
-}
-function renderItemWithBox(ctx, box, item) {
-    renderRect(ctx, 'gray', 'black', box.origin.x, box.origin.y, box.size.x, box.size.y);
-    if (item) {
-        ctx.fillText(item.$displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
-        // if ('quantity' in item) {
-        //     ctx.fillText(`${(item as IQuantity).quantity}`, box.origin.x + 4, box.origin.y + (FONT_SIZE * 2));
-        // }
-        ctx.fillText(item.id.toString(), box.origin.x + 44, box.origin.y + (FONT_SIZE * 2)); // debug
+    // Tooltip
+    const tooltipBox = scene.ui.tooltipBox;
+    const tooltipItem = scene.ui.tooltipItem;
+    x = tooltipBox.origin.x + 10;
+    y = tooltipBox.origin.y + FONT_SIZE;
+    renderBox(ctx, scene.ui.tooltipBox);
+    if (tooltipItem) {
+        renderText(ctx, tooltipItem.$displayName, x, y += FONT_SIZE);
+        renderText(ctx, tooltipItem.$type, x, y += FONT_SIZE);
+        renderText(ctx, tooltipItem.id.toString(), x, y += FONT_SIZE);
     }
 }
 function renderLootPlus(ctx, scene) {
-    ctx.strokeStyle = 'black';
+    ctx.strokeStyle = BLACK;
     ctx.lineWidth = 2;
     let x = scene.ui.lootOrigin.x + (scene.ui.boxSize * scene.ui.visibleLootSize) + 8;
     let y = scene.ui.lootOrigin.y + 4;
@@ -77,60 +77,42 @@ function renderLootPlus(ctx, scene) {
     ctx.stroke();
 }
 function renderStats(ctx, scene) {
-    ctx.font = CTX_FONT;
-    ctx.fillStyle = 'black';
     let x = 20;
     let y = 20;
-    ctx.fillText(scene.character.name, x, y += 20);
-    ctx.fillText(`Level: ${scene.character.level}`, x, y += 20);
-    ctx.fillText(`XP: ${scene.character.xp.quantity} / ${scene.character.xpRequired}`, x, y += 20);
-    ctx.fillText(`STR: ${scene.character.str}`, x, y += 20);
-    ctx.fillText(`DEX: ${scene.character.dex}`, x, y += 20);
-    ctx.fillText(`INT: ${scene.character.int}`, x, y += 20);
-    ctx.fillText(`Health: ${scene.character.health}`, x, y += 20);
-    y += 20;
-    ctx.fillText(`Equipment:`, x, y += 20);
-    for (let slot of scene.ui.equipment.keys()) {
-        const box = scene.ui.equipment.get(slot);
-        const item = scene.character.equipment.get(slot);
-        renderItemWithBox(ctx, box, item);
-    }
-    // renderRect(ctx, 'gray', 'black', x += 96, y += 20, 64, 64); // Helmet
-    // renderRect(ctx, 'gray', 'black', x + 80, y + 16, 32, 32); // Amulet
-    // renderRect(ctx, 'gray', 'black', x, y += 96, 64, 128); // Body armor
-    // renderRect(ctx, 'gray', 'black', x - 96 , y - 32, 64, 128); // Main Hand
-    // renderRect(ctx, 'gray', 'black', x + 96 , y - 32, 64, 128); // Off Hand
-    // renderRect(ctx, 'gray', 'black', x , y += 160, 64, 32); // Belt
-    // renderRect(ctx, 'gray', 'black', x - 96 , y, 64, 64); // Gloves
-    // renderRect(ctx, 'gray', 'black', x + 96 , y, 64, 64); // Boots
-    // renderRect(ctx, 'gray', 'black', x - 48 , y - 48, 32, 32); // Left Ring
-    // renderRect(ctx, 'gray', 'black', x + 80 , y - 48, 32, 32); // Right Ring
-    // OLD TEXT INVENTORY
-    // x += 180;
-    // y = 530;
-    // ctx.fillText(`Inventory:`, x, y += 20);
-    // for (let i = 0; i < scene.character.inventory.items.length; i++) {
-    //     const item = scene.character.inventory.items[i];
-    //     const text = 'quantity' in item ? `${item.displayName} ${(item as IQuantity).quantity}` : item.displayName;
-    //     ctx.font = `12px ${FONT}`;
-    //     ctx.fillText(text, x, y += 10);
-    //     if (i !== 0 && i % 25 === 0) {
-    //         x += 80;
-    //         y = 550;
-    //     }
-    // }
+    renderText(ctx, scene.character.name, x, y += 20);
+    renderText(ctx, `Level: ${scene.character.level}`, x, y += 20);
+    renderText(ctx, `XP: ${scene.character.xp.quantity} / ${scene.character.xpRequired}`, x, y += 20);
+    renderText(ctx, `STR: ${scene.character.str}`, x, y += 20);
+    renderText(ctx, `DEX: ${scene.character.dex}`, x, y += 20);
+    renderText(ctx, `INT: ${scene.character.int}`, x, y += 20);
+    renderText(ctx, `Health: ${scene.character.health}`, x, y += 20);
 }
 function renderProgressBars(ctx, scene) {
     renderProgressBar(ctx, { x: 0, y: 0 }, { x: ctx.canvas.width, y: 20 }, scene.character.xp.quantity, scene.character.xpRequired, 'gold', 'gray'); // XP
     renderProgressBar(ctx, { x: 450, y: 66 }, { x: 256, y: 16 }, scene.mapProgress, 100, 'blue', 'gray'); // Map
 }
 function renderProgressBar(ctx, origin, size, current, max, colorProgress, colorBackground) {
-    renderRect(ctx, colorBackground, 'black', origin.x + 1, origin.y + 1, size.x - 2, size.y);
+    renderRect(ctx, colorBackground, BLACK, origin.x + 1, origin.y + 1, size.x - 2, size.y);
     renderRect(ctx, colorProgress, null, origin.x + 4, origin.y + 4, (size.x - 8) * (current / max), size.y - 6);
 }
 function renderBackground(ctx, canvas) {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+function renderItem(ctx, box, item) {
+    if (item) {
+        renderText(ctx, item.$displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
+        // if ('quantity' in item) {
+        //     renderText(ctx, `${(item as IQuantity).quantity}`, box.origin.x + 4, box.origin.y + (FONT_SIZE * 2));
+        // }
+        renderText(ctx, item.id.toString(), box.origin.x + 44, box.origin.y + (FONT_SIZE * 2)); // debug
+    }
+}
+function renderBox(ctx, box) {
+    renderRect(ctx, 'gray', BLACK, box.origin.x, box.origin.y, box.size.x, box.size.y);
+    if (box.text) {
+        renderText(ctx, box.text, box.origin.x + 4, box.origin.y + FONT_SIZE);
+    }
 }
 function renderShape(ctx, origin, radius, vertices, strokeColor = null, fillColor = null, lineWidth = 2, scaleX = 1, scaleY = 1, rotation = 0) {
     ctx.beginPath();
@@ -150,6 +132,7 @@ function renderShape(ctx, origin, radius, vertices, strokeColor = null, fillColo
     }
 }
 function renderRect(ctx, fillColor = null, strokeColor = null, x = 32, y = 32, w = 32, h = 32, lineWidth = 2) {
+    // debug TODO: simplify, remove previous
     let previousFillStyle;
     let previousStrokeStyle;
     if (fillColor) {
@@ -165,4 +148,9 @@ function renderRect(ctx, fillColor = null, strokeColor = null, x = 32, y = 32, w
     }
     ctx.fillStyle = previousFillStyle;
     ctx.strokeStyle = previousStrokeStyle;
+}
+function renderText(ctx, text, x, y, color = BLACK, size = FONT_SIZE, font = FONT) {
+    ctx.fillStyle = color;
+    ctx.font = `${size}px ${font}`;
+    ctx.fillText(text, x, y);
 }

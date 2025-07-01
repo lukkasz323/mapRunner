@@ -16,7 +16,7 @@ export class MapItem {
     tier = 1;
 
     run(): Inventory {
-        const loot = new Inventory();
+        const loot = new Inventory({x: 8, y: 8});
         
         loot.tryAddItem(new Xp(this.tier * (4 + (Math.ceil(Math.random() * 4)))));
         loot.tryAddItem(new Gold(Math.ceil(Math.random() * 100)));

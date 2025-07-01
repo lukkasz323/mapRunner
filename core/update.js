@@ -1,5 +1,5 @@
 import { isRectCollidingWithPoint } from './collision.js';
-export function updateGame(scene, input, canvas, deltaTime) {
+export function updateGame(scene, input, deltaTime) {
     let loop = true;
     // Debug
     if (input.keys.get('Backquote')) {
@@ -15,6 +15,34 @@ export function updateGame(scene, input, canvas, deltaTime) {
     if (input.keys.get('Digit4'))
         scene.mapSpeed = 32;
     // UI
+    // --- Hover
+    // --- --- Tooltip
+    let tooltipItem = null;
+    for (const [slot, box] of scene.ui.equipment.entries()) {
+        if (isRectCollidingWithPoint(box, input.mouseOrigin)) {
+            const item = scene.character.equipment.get(slot) ?? null;
+            tooltipItem = item;
+            break;
+        }
+    }
+    for (let i = 0; i < scene.ui.loot.length; i++) {
+        const box = scene.ui.loot[i];
+        if (isRectCollidingWithPoint(box, input.mouseOrigin)) {
+            const item = scene.loot.items[i];
+            tooltipItem = item;
+            break;
+        }
+    }
+    for (let i = 0; i < scene.ui.inventory.length; i++) {
+        const box = scene.ui.inventory[i];
+        if (isRectCollidingWithPoint(box, input.mouseOrigin)) {
+            const item = scene.character.bag.items[i];
+            tooltipItem = item;
+            break;
+        }
+    }
+    scene.ui.tooltipItem = tooltipItem;
+    // --- Click
     if (!input.singleClickLock) {
         if (input.isMouseDownLeft) {
             // Run map button
@@ -56,7 +84,8 @@ export function updateGame(scene, input, canvas, deltaTime) {
     }
     if (scene.mapProgress >= 100) {
         scene.mapProgress = 0;
-        scene.loot.loot(scene.map.run());
+        console.warn(scene.loot.loot(scene.map.run()));
+        console.warn(scene.loot.getMaxInvLength());
     }
     // Must be last!
     scene.ticks++;

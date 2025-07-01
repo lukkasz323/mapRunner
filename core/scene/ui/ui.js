@@ -5,7 +5,10 @@ export class UI {
     lootOrigin = { x: 280, y: 108 };
     visibleLootSize = 8;
     runMapButton = new Box({ x: 350, y: 64 }, { x: 88, y: 24 }, 'Pause Map');
+    tooltipBox = new Box({ x: 30, y: 550 }, { x: 240, y: 260 });
+    tooltipItem = null;
     generic = [];
+    items = [];
     inventory = [];
     equipment = new Map();
     loot = [];
@@ -14,7 +17,10 @@ export class UI {
         // Inventory
         for (let y = 0; y < scene.character.bag.size.y; y++) {
             for (let x = 0; x < scene.character.bag.size.x; x++) {
-                this.inventory.push(new Box({ x: this.invOrigin.x + (x * this.boxSize), y: this.invOrigin.y + (y * this.boxSize) }, { x: this.boxSize, y: this.boxSize }));
+                const box = new Box({ x: this.invOrigin.x + (x * this.boxSize), y: this.invOrigin.y + (y * this.boxSize) }, { x: this.boxSize, y: this.boxSize });
+                this.generic.push(box);
+                this.items.push(box);
+                this.inventory.push(box);
             }
         }
         // Equipment
@@ -30,9 +36,15 @@ export class UI {
         this.equipment.set('Boots', new Box({ x: x + 96, y: y }, { x: 64, y: 64 })); // Boots
         this.equipment.set('LeftRing', new Box({ x: x - 48, y: y - 48 }, { x: 32, y: 32 })); // Left Ring
         this.equipment.set('RightRing', new Box({ x: x + 80, y: y - 48 }, { x: 32, y: 32 })); // Right Ring
+        for (const eqBox of this.equipment.values()) {
+            this.generic.push(eqBox);
+            this.items.push(eqBox);
+        }
         // Loot
         for (let x = 0; x < this.visibleLootSize; x++) {
-            this.loot.push(new Box({ x: this.lootOrigin.x + (x * this.boxSize), y: this.lootOrigin.y }, { x: this.boxSize, y: this.boxSize }));
+            const box = new Box({ x: this.lootOrigin.x + (x * this.boxSize), y: this.lootOrigin.y }, { x: this.boxSize, y: this.boxSize });
+            this.generic.push(box);
+            this.loot.push(box);
         }
     }
 }

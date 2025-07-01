@@ -13,17 +13,7 @@ export class Character {
     int = 10;
     health = 100;
     bag: Inventory = new Inventory({x: 8, y: 8});
-    equipment: Map<EquipmentSlot, Item> = new Map();
-    // mainHand: Item = null;
-    // offHand: Item = null;
-    // bodyarmor: Item = null;
-    // helmet: Item = null;
-    // boots: Item = null;
-    // gloves: Item = null;
-    // belt: Item = null;
-    // amulet: Item = null;
-    // leftRing: Item = null;
-    // rightRing: Item = null;
+    equipment: Map<EquipmentSlot, Item|null> = new Map();
 
     constructor(public name: string) {
         this.bag.tryAddItem(this.xp);
@@ -46,7 +36,7 @@ export class Character {
     }
 
     tryUnequip(equipmentSlot: EquipmentSlot): boolean {
-        if (this.bag.tryAddItem(this.equipment.get(equipmentSlot))) {
+        if (this.bag.tryAddItem(this.equipment.get(equipmentSlot) as Item)) {
             this.equipment.set(equipmentSlot, null);
 
             return true; // Space available
@@ -57,7 +47,7 @@ export class Character {
     swapEquipment(bagItemIndex: number) {
         const bagItem: Item = this.bag.items[bagItemIndex];
         if (bagItem) {
-            let slot: EquipmentSlot;
+            let slot: EquipmentSlot|undefined;
             // Handle multi-slots first
             if (bagItem.$type === 'Ring') {
                 // If only left occupied

@@ -12,16 +12,6 @@ export class Character {
     health = 100;
     bag = new Inventory({ x: 8, y: 8 });
     equipment = new Map();
-    // mainHand: Item = null;
-    // offHand: Item = null;
-    // bodyarmor: Item = null;
-    // helmet: Item = null;
-    // boots: Item = null;
-    // gloves: Item = null;
-    // belt: Item = null;
-    // amulet: Item = null;
-    // leftRing: Item = null;
-    // rightRing: Item = null;
     constructor(name) {
         this.name = name;
         this.bag.tryAddItem(this.xp);

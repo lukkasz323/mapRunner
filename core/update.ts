@@ -1,8 +1,10 @@
 import { isRectCollidingWithPoint } from './collision.js';
 import { Input } from './scene/input.js';
+import { Item } from './scene/items/item.js';
 import { Scene } from './scene/scene.js';
+import { Box } from './scene/ui/box.js';
 
-export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement, deltaTime: number): boolean {
+export function updateGame(scene: Scene, input: Input, deltaTime: number): boolean {
     let loop = true;
 
     // Debug
@@ -16,6 +18,37 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
     if (input.keys.get('Digit4')) scene.mapSpeed = 32;
 
     // UI
+    // --- Hover
+    // --- --- Tooltip
+    let tooltipItem: Item|null = null;
+
+    for (const [slot, box] of scene.ui.equipment.entries()) {
+        if (isRectCollidingWithPoint(box, input.mouseOrigin)) {
+            const item: Item|null = scene.character.equipment.get(slot) ?? null;
+            tooltipItem = item;
+            break;
+        }
+    }
+    for (let i = 0; i < scene.ui.loot.length; i++) {
+        const box: Box = scene.ui.loot[i]
+        if (isRectCollidingWithPoint(box, input.mouseOrigin)) {
+            const item: Item = scene.loot.items[i];
+            tooltipItem = item;
+            break;
+        }
+    }
+    for (let i = 0; i < scene.ui.inventory.length; i++) {
+        const box: Box = scene.ui.inventory[i]
+        if (isRectCollidingWithPoint(box, input.mouseOrigin)) {
+            const item: Item = scene.character.bag.items[i];
+            tooltipItem = item;
+            break;
+        }
+    }
+
+    scene.ui.tooltipItem = tooltipItem;
+
+    // --- Click
     if (!input.singleClickLock) {
         if (input.isMouseDownLeft) {
             // Run map button
@@ -63,7 +96,8 @@ export function updateGame(scene: Scene, input: Input, canvas: HTMLCanvasElement
     if (scene.mapProgress >= 100) {
         scene.mapProgress = 0;
         
-        scene.loot.loot(scene.map.run());
+        console.warn(scene.loot.loot(scene.map.run()));
+        console.warn(scene.loot.getMaxInvLength());
     }
     
 

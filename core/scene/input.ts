@@ -17,15 +17,15 @@ export class Input {
     }
 
     addEventListeners() {
-        this.canvas.addEventListener('mousemove', (event: PointerEvent) => this.#onMouseMove(event));
-        this.canvas.addEventListener('mousedown', (event: PointerEvent) => this.#onMouseDown(event));
-        this.canvas.addEventListener('mouseup', (event: PointerEvent) => this.#onMouseUp(event));
+        this.canvas.addEventListener('mousemove', (event: MouseEvent) => this.#onMouseMove(event));
+        this.canvas.addEventListener('mousedown', (event: MouseEvent) => this.#onMouseDown(event));
+        this.canvas.addEventListener('mouseup', (event: MouseEvent) => this.#onMouseUp(event));
         document.addEventListener('keydown', (event: KeyboardEvent) => this.#onKeyDown(event));
         document.addEventListener('keyup', (event: KeyboardEvent) => this.#onKeyUp(event));
-        this.canvas.addEventListener('contextmenu', (event: PointerEvent) => this.#onContextMenu(event));
+        this.canvas.addEventListener('contextmenu', (event: MouseEvent) => this.#onContextMenu(event));
     }
 
-    #onMouseMove(e: PointerEvent): void {
+    #onMouseMove(e: MouseEvent): void {
         const canvasBoundingClientRect: DOMRect = this.canvas.getBoundingClientRect();
 
         this.mouseOrigin = {
@@ -36,7 +36,7 @@ export class Input {
         // this.worldOrigin = {x: this.screenOrigin.x + this.scene.camera.origin.x, y: this.screenOrigin.y + this.scene.camera.origin.y};
     }
 
-    #onMouseDown(e: PointerEvent) {
+    #onMouseDown(e: MouseEvent) {
         this.isMouseDown = true;
         if (e.button === 0) {
             this.isMouseDownLeft = true;
@@ -48,7 +48,7 @@ export class Input {
         this.singleClickLock = false;
     }
 
-    #onMouseUp(e: PointerEvent) {
+    #onMouseUp(e: MouseEvent) {
         this.isMouseDown = false;
         this.isMouseDownLeft = false;
         this.isMouseDownRight = false;
@@ -62,7 +62,7 @@ export class Input {
         this.keys.set(e.code, false);
     }
 
-    #onContextMenu(e: PointerEvent) {
+    #onContextMenu(e: MouseEvent) {
         e.preventDefault();
     }
 }

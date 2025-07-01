@@ -1,3 +1,4 @@
+import { equalsShallow } from '../../utils/utils.js';
 import { Vector2 } from '../../utils/vector2.js';
 import { IQuantity } from './items/i-quantity.js';
 import { Item } from './items/item.js';
@@ -5,7 +6,7 @@ import { Item } from './items/item.js';
 export class Inventory {
     items: Item[] = [];
 
-    constructor(public size: Vector2 = null) {
+    constructor(public size: Vector2) {
     }
 
     getMaxInvLength() {
@@ -13,7 +14,8 @@ export class Inventory {
     }
 
     inventoryHasSpace() {
-        if (!this.size) {
+        if (equalsShallow(this.size, {x: 0, y: 0})) {
+        // if (this.size.x === 0 && this.size.y === 0) {
             return true;
         }
         return this.items.length < this.getMaxInvLength();

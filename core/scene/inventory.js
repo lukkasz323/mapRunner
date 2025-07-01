@@ -1,14 +1,16 @@
+import { equalsShallow } from '../../utils/utils.js';
 export class Inventory {
     size;
     items = [];
-    constructor(size = null) {
+    constructor(size) {
         this.size = size;
     }
     getMaxInvLength() {
         return this.size.x * this.size.y;
     }
     inventoryHasSpace() {
-        if (!this.size) {
+        if (equalsShallow(this.size, { x: 0, y: 0 })) {
+            // if (this.size.x === 0 && this.size.y === 0) {
             return true;
         }
         return this.items.length < this.getMaxInvLength();

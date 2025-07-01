@@ -23,7 +23,7 @@ export class Game {
             let deltaTime = now - lastDate;
             lastDate = now;
 
-            const continueGame = updateGame(scene, input, canvas, deltaTime);
+            const continueGame = updateGame(scene, input, deltaTime);
             renderGame(scene, input, canvas);
 
             // Restart game
