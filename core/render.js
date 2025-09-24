@@ -58,23 +58,31 @@ function renderUI(ctx, scene) {
     y = tooltipBox.origin.y + FONT_SIZE;
     if (tooltipItem) {
         renderText(ctx, tooltipItem.$displayName, x, y += FONT_SIZE);
-        renderText(ctx, tooltipItem.$type, x, y += FONT_SIZE);
-        renderText(ctx, tooltipItem.id.toString(), x, y += FONT_SIZE);
+        renderText(ctx, `ID: ${tooltipItem.id}`, x, tooltipBox.origin.y + tooltipBox.size.y - FONT_SIZE);
+        if ('percentile' in tooltipItem) {
+            renderText(ctx, `Quality: ${tooltipItem.percentile}%`, x, y += FONT_SIZE);
+        }
+        if ('mods' in tooltipItem) {
+            renderText(ctx, 'Mods:', x, y += FONT_SIZE);
+            for (const mod of tooltipItem.mods) {
+                renderText(ctx, `Quality: ${mod}`, x, y += FONT_SIZE);
+            }
+        }
     }
 }
-function renderLootPlus(ctx, scene) {
-    ctx.strokeStyle = BLACK;
-    ctx.lineWidth = 2;
-    let x = scene.ui.lootOrigin.x + (scene.ui.boxSize * scene.ui.visibleLootSize) + 8;
-    let y = scene.ui.lootOrigin.y + 4;
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + 16, y);
-    ctx.closePath();
-    ctx.moveTo(x + 8, y - 8);
-    ctx.lineTo(x + 8, y + 8);
-    ctx.stroke();
-}
+// function renderLootPlus(ctx: CanvasRenderingContext2D, scene: Scene) {
+//     ctx.strokeStyle = BLACK;
+//     ctx.lineWidth = 2;
+//     let x = scene.ui.lootOrigin.x + (scene.ui.boxSize * scene.ui.visibleLootSize) + 8;
+//     let y = scene.ui.lootOrigin.y + 4;
+//     ctx.beginPath();
+//     ctx.moveTo(x, y);
+//     ctx.lineTo(x + 16, y);
+//     ctx.closePath();
+//     ctx.moveTo(x + 8, y - 8);
+//     ctx.lineTo(x + 8, y + 8);
+//     ctx.stroke();
+// }
 function renderStats(ctx, scene) {
     let x = 20;
     let y = 20;

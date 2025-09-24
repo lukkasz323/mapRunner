@@ -6,6 +6,7 @@ import { Scene } from './scene/scene.js';
 import { IQuantity } from './scene/items/i-quantity.js';
 import { Box } from './scene/ui/box.js';
 import { Item } from './scene/items/item.js';
+import { IRarity } from './scene/items/i-rarity.js';
 
 export function renderGame(scene: Scene, input: Input, canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -78,26 +79,34 @@ function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
 
     if (tooltipItem) {
         renderText(ctx, tooltipItem.$displayName, x, y += FONT_SIZE);
-        renderText(ctx, tooltipItem.$type, x, y += FONT_SIZE);
-        renderText(ctx, tooltipItem.id.toString(), x, y += FONT_SIZE);
+        renderText(ctx, `ID: ${tooltipItem.id}`, x, tooltipBox.origin.y + tooltipBox.size.y - FONT_SIZE);
+        if ('percentile' in tooltipItem) {
+            renderText(ctx, `Quality: ${(tooltipItem as IRarity).percentile}%`, x, y += FONT_SIZE);
+        }
+        if ('mods' in tooltipItem) {
+            renderText(ctx, 'Mods:', x, y += FONT_SIZE);
+            for (const mod of (tooltipItem as IRarity).mods) {
+                renderText(ctx, `Quality: ${mod}`, x, y += FONT_SIZE);
+            }
+        }
     }
 }
 
-function renderLootPlus(ctx: CanvasRenderingContext2D, scene: Scene) {
-    ctx.strokeStyle = BLACK;
-    ctx.lineWidth = 2;
+// function renderLootPlus(ctx: CanvasRenderingContext2D, scene: Scene) {
+//     ctx.strokeStyle = BLACK;
+//     ctx.lineWidth = 2;
 
-    let x = scene.ui.lootOrigin.x + (scene.ui.boxSize * scene.ui.visibleLootSize) + 8;
-    let y = scene.ui.lootOrigin.y + 4;
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + 16, y);
-    ctx.closePath();
-    ctx.moveTo(x + 8, y - 8);
-    ctx.lineTo(x + 8, y + 8);
-    ctx.stroke();
+//     let x = scene.ui.lootOrigin.x + (scene.ui.boxSize * scene.ui.visibleLootSize) + 8;
+//     let y = scene.ui.lootOrigin.y + 4;
+//     ctx.beginPath();
+//     ctx.moveTo(x, y);
+//     ctx.lineTo(x + 16, y);
+//     ctx.closePath();
+//     ctx.moveTo(x + 8, y - 8);
+//     ctx.lineTo(x + 8, y + 8);
+//     ctx.stroke();
     
-}
+// }
 
 function renderStats(ctx: CanvasRenderingContext2D, scene: Scene) {
     let x = 20;
