@@ -50,7 +50,7 @@ export class Inventory {
             if (wasItemTransfered) {
                 transferCount++;
             }
-            if (!wasItemTransfered) {
+            else {
                 break;
             }
         }

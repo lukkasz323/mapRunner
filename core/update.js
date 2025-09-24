@@ -84,8 +84,7 @@ export function updateGame(scene, input, deltaTime) {
     }
     if (scene.mapProgress >= 100) {
         scene.mapProgress = 0;
-        console.warn(scene.loot.loot(scene.map.run()));
-        console.warn(scene.loot.getMaxInvLength());
+        scene.loot.loot(scene.map.run());
     }
     // Must be last!
     scene.ticks++;

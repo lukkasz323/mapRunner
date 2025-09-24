@@ -59,8 +59,7 @@ export class Inventory {
             const wasItemTransfered: boolean = this.tryTransferItem(loot, 0);
             if (wasItemTransfered) {
                 transferCount++;
-            }
-            if (!wasItemTransfered) {
+            } else {
                 break;
             }
         }

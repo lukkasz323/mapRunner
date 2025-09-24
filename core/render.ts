@@ -45,13 +45,7 @@ function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
         const box = scene.ui.loot[i];
         const item = scene.loot.items[i];
 
-        renderRect(ctx, 'gray', BLACK, box.origin.x, box.origin.y, box.size.x, box.size.y);
-        if (item) {
-            renderText(ctx, item.$displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
-            if ('quantity' in item) {
-                renderText(ctx, `${(item as IQuantity).quantity}`, box.origin.x + 4, box.origin.y + (FONT_SIZE * 2));
-            }
-        }
+        renderItem(ctx, box, item);
     }
 
     if (scene.loot.items.length > scene.ui.visibleLootSize) {
@@ -138,10 +132,11 @@ function renderBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasEleme
 function renderItem(ctx: CanvasRenderingContext2D, box: Box, item: Item) {
     if (item) {
         renderText(ctx, item.$displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
-        // if ('quantity' in item) {
-        //     renderText(ctx, `${(item as IQuantity).quantity}`, box.origin.x + 4, box.origin.y + (FONT_SIZE * 2));
-        // }
-        renderText(ctx, item.id.toString(), box.origin.x + 44, box.origin.y + (FONT_SIZE * 2)); // debug
+        if ('quantity' in item) {
+            renderText(ctx, `${(item as IQuantity).quantity}`, box.origin.x + 4, box.origin.y + (FONT_SIZE * 2));
+        }
+
+        // renderText(ctx, item.id.toString(), box.origin.x + 44, box.origin.y + (FONT_SIZE * 2)); // debug, ID
     }
 }
 
