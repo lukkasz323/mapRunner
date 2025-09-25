@@ -39,11 +39,11 @@ export class Inventory {
         return true;
     }
 
-    tryTransferItem(transferInv: Inventory, transferedIndex: number): boolean {
-        const transferedItem: Item = transferInv.items[transferedIndex];
+    tryTransferItemFrom(sourceInv: Inventory, sourceItemIndex: number): boolean {
+        const transferedItem: Item = sourceInv.items[sourceItemIndex];
         
         if (this.tryAddItem(transferedItem)) { // ADD
-            transferInv.items.splice(transferedIndex, 1); // REMOVE
+            sourceInv.items.splice(sourceItemIndex, 1); // REMOVE
 
             return true
         };
@@ -51,12 +51,32 @@ export class Inventory {
         return false;
     }
 
+    tryTransferItemFrom_HoldXp(sourceInv: Inventory, sourceItemIndex: number): { success: boolean, xp: number } {
+        let xp = 0;
+        const transferedItem: Item = sourceInv.items[sourceItemIndex];
+
+        if (transferedItem.$type === 'Xp') {
+            xp =+ (transferedItem as IQuantity).quantity;
+            sourceInv.items.splice(sourceItemIndex, 1); // REMOVE
+            
+            return { success: true, xp };
+        }
+
+        if (this.tryAddItem(transferedItem)) { // ADD
+            sourceInv.items.splice(sourceItemIndex, 1); // REMOVE
+
+            return { success: true, xp };
+        };
+
+        return { success: false, xp };
+    }
+
     loot(loot: Inventory): boolean {
         const initialLootSize = loot.items.length;
         let transferCount = 0;
 
         while (loot.items.length !== 0) {
-            const wasItemTransfered: boolean = this.tryTransferItem(loot, 0);
+            const wasItemTransfered: boolean = this.tryTransferItemFrom(loot, 0);
             if (wasItemTransfered) {
                 transferCount++;
             } else {

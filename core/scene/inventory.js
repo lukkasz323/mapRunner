@@ -33,20 +33,35 @@ export class Inventory {
         }
         return true;
     }
-    tryTransferItem(transferInv, transferedIndex) {
-        const transferedItem = transferInv.items[transferedIndex];
+    tryTransferItemFrom(sourceInv, sourceItemIndex) {
+        const transferedItem = sourceInv.items[sourceItemIndex];
         if (this.tryAddItem(transferedItem)) { // ADD
-            transferInv.items.splice(transferedIndex, 1); // REMOVE
+            sourceInv.items.splice(sourceItemIndex, 1); // REMOVE
             return true;
         }
         ;
         return false;
     }
+    tryTransferItemFrom_HoldXp(sourceInv, sourceItemIndex) {
+        let xp = 0;
+        const transferedItem = sourceInv.items[sourceItemIndex];
+        if (transferedItem.$type === 'Xp') {
+            xp = +transferedItem.quantity;
+            sourceInv.items.splice(sourceItemIndex, 1); // REMOVE
+            return { success: true, xp };
+        }
+        if (this.tryAddItem(transferedItem)) { // ADD
+            sourceInv.items.splice(sourceItemIndex, 1); // REMOVE
+            return { success: true, xp };
+        }
+        ;
+        return { success: false, xp };
+    }
     loot(loot) {
         const initialLootSize = loot.items.length;
         let transferCount = 0;
         while (loot.items.length !== 0) {
-            const wasItemTransfered = this.tryTransferItem(loot, 0);
+            const wasItemTransfered = this.tryTransferItemFrom(loot, 0);
             if (wasItemTransfered) {
                 transferCount++;
             }

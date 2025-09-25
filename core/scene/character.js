@@ -6,15 +6,14 @@ export class Character {
     level = 1;
     xp = new Xp(0);
     xpRequired = 10;
-    str = 10;
-    dex = 10;
-    int = 10;
+    str = 0;
+    dex = 0;
+    int = 0;
     health = 100;
     bag = new Inventory({ x: 8, y: 8 });
     equipment = new Map();
     constructor(name) {
         this.name = name;
-        this.bag.tryAddItem(this.xp);
     }
     tryLevelUp() {
         if (this.xp.quantity >= this.xpRequired) {
@@ -73,6 +72,14 @@ export class Character {
                     this.bag.removeItemAt(bagItemIndex);
                 }
             }
+        }
+    }
+    tryLootItem(loot, itemIndex) {
+        const { xp } = this.bag.tryTransferItemFrom_HoldXp(loot, itemIndex);
+        if (xp > 0) {
+            // debugger;
+            this.xp.quantity += xp;
+            this.tryLevelUp();
         }
     }
 }

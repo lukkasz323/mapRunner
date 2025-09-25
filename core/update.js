@@ -55,8 +55,8 @@ export function updateGame(scene, input, deltaTime) {
                 const box = scene.ui.loot[i];
                 const item = scene.loot.items[i];
                 if (item && isRectCollidingWithPoint(box, input.mouseOrigin)) {
-                    scene.character.bag.tryTransferItem(scene.loot, i);
-                    scene.character.tryLevelUp();
+                    scene.character.tryLootItem(scene.loot, i);
+                    console.warn('Loot');
                 }
             }
         }
@@ -85,6 +85,11 @@ export function updateGame(scene, input, deltaTime) {
     if (scene.mapProgress >= 100) {
         scene.mapProgress = 0;
         scene.loot.loot(scene.map.run());
+        // Auto-loot XP
+        const xpIndex = scene.loot.items.findIndex(item => item.$type === 'Xp');
+        if (xpIndex !== -1) {
+            scene.character.tryLootItem(scene.loot, xpIndex);
+        }
     }
     // Must be last!
     scene.ticks++;
