@@ -12,10 +12,9 @@ import { Ring } from './items/ring.js';
 import { Chainmail } from './items/chainmail.js';
 import { Helmet } from './items/helmet.js';
 export class MapRunner {
-    tier = 1;
-    run() {
+    run(mapItem) {
         const loot = new Inventory({ x: 8, y: 8 });
-        loot.tryAddItem(new Xp(this.tier * (4 + (Math.ceil(Math.random() * 4)))));
+        loot.tryAddItem(new Xp(mapItem.tier * (4 + (Math.ceil(Math.random() * 4)))));
         loot.tryAddItem(new Gold(Math.ceil(Math.random() * 100)));
         loot.tryAddItem(new Sword());
         loot.tryAddItem(new Bow());

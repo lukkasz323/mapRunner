@@ -1,6 +1,7 @@
 import { isRectCollidingWithPoint } from './collision.js';
 import { Input } from './scene/input.js';
 import { Item } from './scene/items/item.js';
+import { MapItem } from './scene/items/map-item.js';
 import { Scene } from './scene/scene.js';
 import { Box } from './scene/ui/box.js';
 
@@ -96,7 +97,7 @@ export function updateGame(scene: Scene, input: Input, deltaTime: number): boole
     if (scene.mapProgress >= 100) {
         scene.mapProgress = 0;
         
-        scene.loot.loot(scene.map.run());
+        scene.loot.loot(scene.map.run(new MapItem(1)));
         // Auto-loot XP
         const xpIndex = scene.loot.items.findIndex(item => item.$type === 'Xp')
         if (xpIndex !== -1) {

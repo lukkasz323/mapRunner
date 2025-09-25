@@ -1,4 +1,5 @@
 import { isRectCollidingWithPoint } from './collision.js';
+import { MapItem } from './scene/items/map-item.js';
 export function updateGame(scene, input, deltaTime) {
     let loop = true;
     // Debug
@@ -84,7 +85,7 @@ export function updateGame(scene, input, deltaTime) {
     }
     if (scene.mapProgress >= 100) {
         scene.mapProgress = 0;
-        scene.loot.loot(scene.map.run());
+        scene.loot.loot(scene.map.run(new MapItem(1)));
         // Auto-loot XP
         const xpIndex = scene.loot.items.findIndex(item => item.$type === 'Xp');
         if (xpIndex !== -1) {

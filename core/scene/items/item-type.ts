@@ -10,4 +10,5 @@ export type ItemType =
     | 'Ring'
     | 'Gold'
     | 'Xp'
-    | 'Consumable';
+    | 'Consumable'
+    | 'Generic';
