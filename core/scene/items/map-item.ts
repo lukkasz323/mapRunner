@@ -4,8 +4,7 @@ import { ItemType } from './item-type.js';
 import { IRarity } from './i-rarity.js';
 
 export class MapItem extends Item implements IRarity {
-    $displayName = 'Shield';
-    $type: ItemType = 'Generic';
+    $displayName = 'Map';
     mods = [];
     percentile = 0;
 

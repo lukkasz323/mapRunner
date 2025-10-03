@@ -1,8 +1,7 @@
 import { Item } from './item.js';
 export class MapItem extends Item {
     tier;
-    $displayName = 'Shield';
-    $type = 'Generic';
+    $displayName = 'Map';
     mods = [];
     percentile = 0;
     constructor(tier) {

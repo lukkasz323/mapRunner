@@ -1,9 +1,9 @@
 import { generateNewId } from '../../global.js';
 import { ItemType } from './item-type.js';
 
-export abstract class Item {
-    abstract $displayName: string;
-    abstract $type: ItemType;
+export class Item {
+    $displayName: string = 'Item';
+    $type: ItemType = 'Generic'; 
 
     constructor(public id: number = generateNewId()) {
     }

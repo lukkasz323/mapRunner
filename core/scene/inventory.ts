@@ -18,7 +18,7 @@ export class Inventory {
         // if (this.size.x === 0 && this.size.y === 0) {
             return true;
         }
-        return this.items.length < this.getMaxInvLength();
+        return this.items.length <= this.getMaxInvLength();
     }
 
     removeItemAt(index: number): Item {

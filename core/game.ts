@@ -1,3 +1,4 @@
+import '../utils/extensions.js';
 import { Scene } from './scene/scene.js';
 import { renderGame } from './render.js';
 import { updateGame } from './update.js';
