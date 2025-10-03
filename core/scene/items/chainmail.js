@@ -1,7 +1,7 @@
 import { Item } from './item.js';
+import { Rarity } from './components/rarity.js';
 export class Chainmail extends Item {
     $displayName = 'Chainmail';
     $type = 'BodyArmor';
-    mods = [];
-    percentile = 0;
+    rarity = new Rarity();
 }

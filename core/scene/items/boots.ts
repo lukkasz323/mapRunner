@@ -1,11 +1,10 @@
 
 import { Item } from './item.js';
 import { ItemType } from './item-type.js';
-import { IRarity } from './i-rarity.js';
+import { Rarity } from './components/rarity.js';
 
-export class Boots extends Item implements IRarity {
+export class Boots extends Item {
     $displayName = 'Boots';
     $type: ItemType = 'Boots';
-    mods = [];
-    percentile = 0;
+    rarity = new Rarity();
 }

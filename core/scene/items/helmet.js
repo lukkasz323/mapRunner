@@ -1,7 +1,7 @@
 import { Item } from './item.js';
+import { Rarity } from './components/rarity.js';
 export class Helmet extends Item {
     $displayName = 'Helmet';
     $type = 'Helmet';
-    mods = [];
-    percentile = 0;
+    rarity = new Rarity();
 }
