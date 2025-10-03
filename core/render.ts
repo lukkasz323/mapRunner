@@ -6,7 +6,7 @@ import { Scene } from './scene/scene.js';
 import { IQuantity } from './scene/items/i-quantity.js';
 import { Box } from './scene/ui/box.js';
 import { Item } from './scene/items/item.js';
-import { IRarity } from './scene/items/i-rarity.js';
+import { Rarity, IRarity } from './scene/items/components/rarity.js';
 
 export function renderGame(scene: Scene, input: Input, canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -74,12 +74,11 @@ function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
     if (tooltipItem) {
         renderText(ctx, tooltipItem.$displayName, x, y += FONT_SIZE);
         renderText(ctx, `ID: ${tooltipItem.id}`, x, tooltipBox.origin.y + tooltipBox.size.y - FONT_SIZE);
-        if ('percentile' in tooltipItem) {
-            renderText(ctx, `Quality: ${(tooltipItem as IRarity).percentile}%`, x, y += FONT_SIZE);
-        }
-        if ('mods' in tooltipItem) {
+        if ('rarity' in tooltipItem) {
+            const rarity: Rarity = (tooltipItem as IRarity).rarity;
+            renderText(ctx, `Quality: ${Math.round(rarity.percentile * 100)}%`, x, y += FONT_SIZE);
             renderText(ctx, 'Mods:', x, y += FONT_SIZE);
-            for (const mod of (tooltipItem as IRarity).mods) {
+            for (const mod of rarity.mods) {
                 renderText(ctx, `Quality: ${mod}`, x, y += FONT_SIZE);
             }
         }

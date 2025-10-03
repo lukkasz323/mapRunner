@@ -1,12 +1,10 @@
 
 import { Item } from './item.js';
-import { ItemType } from './item-type.js';
-import { IRarity } from './i-rarity.js';
+import { Rarity, IRarity } from './components/rarity.js';
 
 export class MapItem extends Item implements IRarity {
     $displayName = 'Map';
-    mods = [];
-    percentile = 0;
+    rarity = new Rarity();
 
     constructor(public tier: number) {
         super();

@@ -53,12 +53,11 @@ function renderUI(ctx, scene) {
     if (tooltipItem) {
         renderText(ctx, tooltipItem.$displayName, x, y += FONT_SIZE);
         renderText(ctx, `ID: ${tooltipItem.id}`, x, tooltipBox.origin.y + tooltipBox.size.y - FONT_SIZE);
-        if ('percentile' in tooltipItem) {
-            renderText(ctx, `Quality: ${tooltipItem.percentile}%`, x, y += FONT_SIZE);
-        }
-        if ('mods' in tooltipItem) {
+        if ('rarity' in tooltipItem) {
+            const rarity = tooltipItem.rarity;
+            renderText(ctx, `Quality: ${Math.round(rarity.percentile * 100)}%`, x, y += FONT_SIZE);
             renderText(ctx, 'Mods:', x, y += FONT_SIZE);
-            for (const mod of tooltipItem.mods) {
+            for (const mod of rarity.mods) {
                 renderText(ctx, `Quality: ${mod}`, x, y += FONT_SIZE);
             }
         }
