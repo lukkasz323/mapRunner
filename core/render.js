@@ -1,4 +1,4 @@
-import { degreesToRadians } from '../utils/utils.js';
+import { asPercentage as floatToPercentageString, degreesToRadians } from '../utils/utils.js';
 import { BLACK, FONT, FONT_SIZE } from './constants.js';
 export function renderGame(scene, input, canvas) {
     const ctx = canvas.getContext('2d');
@@ -53,9 +53,12 @@ function renderUI(ctx, scene) {
     if (tooltipItem) {
         renderText(ctx, tooltipItem.$displayName, x, y += FONT_SIZE);
         renderText(ctx, `ID: ${tooltipItem.id}`, x, tooltipBox.origin.y + tooltipBox.size.y - FONT_SIZE);
+        if ('getSurvivability' in tooltipItem) {
+            renderText(ctx, `Survivability: ${floatToPercentageString(tooltipItem.getSurvivability(scene.character))}`, x, y += FONT_SIZE);
+        }
         if ('rarity' in tooltipItem) {
             const rarity = tooltipItem.rarity;
-            renderText(ctx, `Quality: ${Math.round(rarity.percentile * 100)}%`, x, y += FONT_SIZE);
+            renderText(ctx, `Quality: ${floatToPercentageString(rarity.percentile)}`, x, y += FONT_SIZE);
             renderText(ctx, 'Mods:', x, y += FONT_SIZE);
             for (const mod of rarity.mods) {
                 renderText(ctx, `Quality: ${mod}`, x, y += FONT_SIZE);

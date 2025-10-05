@@ -1,5 +1,13 @@
 export const DIAGONAL: number = 0.7071067811865475;
 
+export function clamp(value: number, min: number, max: number): number {
+    return Math.min(Math.max(value, min), max);
+}
+
+export function asPercentage(value: number, decimals: number = 0): string {
+    return `${(value * 100).toFixed(decimals)}%`;
+}
+
 export function equalsShallow<T>(a: T, b: T): boolean {
     return Object.keys(a as any).every(key => (a as any)[key] === (b as any)[key]);
 }

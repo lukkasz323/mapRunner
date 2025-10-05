@@ -1,4 +1,4 @@
-import { degreesToRadians } from '../utils/utils.js';
+import { asPercentage as floatToPercentageString, degreesToRadians } from '../utils/utils.js';
 import { Vector2 } from '../utils/vector2.js';
 import { BLACK, CTX_FONT, FONT, FONT_SIZE } from './constants.js';
 import { Input } from './scene/input.js';
@@ -7,6 +7,7 @@ import { IQuantity } from './scene/items/i-quantity.js';
 import { Box } from './scene/ui/box.js';
 import { Item } from './scene/items/item.js';
 import { Rarity, IRarity } from './scene/items/components/rarity.js';
+import { MapItem } from './scene/items/map-item.js';
 
 export function renderGame(scene: Scene, input: Input, canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -74,9 +75,14 @@ function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
     if (tooltipItem) {
         renderText(ctx, tooltipItem.$displayName, x, y += FONT_SIZE);
         renderText(ctx, `ID: ${tooltipItem.id}`, x, tooltipBox.origin.y + tooltipBox.size.y - FONT_SIZE);
+
+        if ('getSurvivability' in tooltipItem) {
+            renderText(ctx, `Survivability: ${floatToPercentageString((tooltipItem as MapItem).getSurvivability(scene.character))}`, x, y += FONT_SIZE);
+        }
+
         if ('rarity' in tooltipItem) {
             const rarity: Rarity = (tooltipItem as IRarity).rarity;
-            renderText(ctx, `Quality: ${Math.round(rarity.percentile * 100)}%`, x, y += FONT_SIZE);
+            renderText(ctx, `Quality: ${floatToPercentageString(rarity.percentile)}`, x, y += FONT_SIZE);
             renderText(ctx, 'Mods:', x, y += FONT_SIZE);
             for (const mod of rarity.mods) {
                 renderText(ctx, `Quality: ${mod}`, x, y += FONT_SIZE);
