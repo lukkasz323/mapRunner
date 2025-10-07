@@ -55,9 +55,8 @@ export function updateGame(scene, input, deltaTime) {
             // Loot
             for (let i = 0; i < scene.ui.loot.length; i++) {
                 const box = scene.ui.loot[i];
-                const item = scene.loot.items[i];
-                if (item && isRectCollidingWithPoint(box, input.mouseOrigin)) {
-                    scene.character.tryLootItem(scene.loot, i);
+                if (scene.loot.items[i] && isRectCollidingWithPoint(box, input.mouseOrigin)) {
+                    scene.character.tryLootItem(scene.loot, i + scene.ui.lootScroll);
                     console.warn('Loot');
                 }
             }

@@ -13,9 +13,9 @@ export class Rarity {
     getColor(): string {
         switch (this.mods.length) {
             default:
-                return 'gray';
+                return 'blue';
             case 1:
-                return 'green';
+                return 'red';
             case 2:
                 return 'blue';
             case 3:

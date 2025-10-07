@@ -147,13 +147,22 @@ function renderBackground(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasEleme
 
 function renderItem(ctx: CanvasRenderingContext2D, box: Box, item: Item) {
     if (item) {
+        // Text
         renderText(ctx, item.$displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
         if ('quantity' in item) {
             renderText(ctx, `${(item as IQuantity).quantity}`, box.origin.x + 4, box.origin.y + (FONT_SIZE * 2));
         }
 
+        // Rarity color
         if ('rarity' in item) {
-            renderRect(ctx, null, (item as IRarity).rarity.getColor(), box.origin.x + 2, box.origin.y + 2, box.size.x - 4, box.size.y - 4);
+            const color = (item as IRarity).rarity.getColor()
+            if (color !== 'gray') {
+                let lineWidth = 2;
+                if (color === 'blue') {
+                    lineWidth = 2;
+                }
+                renderRect(ctx, null, color, box.origin.x + 2, box.origin.y + 2, box.size.x - 4, box.size.y - 4, lineWidth);
+            }
         }
 
         // renderText(ctx, item.id.toString(), box.origin.x + 44, box.origin.y + (FONT_SIZE * 2)); // debug, ID
