@@ -2,7 +2,7 @@ export const DIAGONAL = 0.7071067811865475;
 export function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
 }
-export function asPercentage(value, decimals = 0) {
+export function floatPercentageFormatted(value, decimals = 0) {
     return `${(value * 100).toFixed(decimals)}%`;
 }
 export function equalsShallow(a, b) {

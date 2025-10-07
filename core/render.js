@@ -1,4 +1,4 @@
-import { asPercentage as floatToPercentageString, degreesToRadians } from '../utils/utils.js';
+import { floatPercentageFormatted, degreesToRadians } from '../utils/utils.js';
 import { BLACK, FONT, FONT_SIZE } from './constants.js';
 export function renderGame(scene, input, canvas) {
     const ctx = canvas.getContext('2d');
@@ -26,15 +26,25 @@ function renderUI(ctx, scene) {
         renderItem(ctx, box, item);
     }
     // Map Loot
-    for (let i = 0; i < scene.ui.visibleLootSize; i++) {
+    // --- Items
+    const offset = scene.ui.lootScroll;
+    for (let i = 0; i < scene.ui.lootVisibleSize; i++) {
         const box = scene.ui.loot[i];
-        const item = scene.loot.items[i];
+        const item = scene.loot.items[i + offset];
         renderItem(ctx, box, item);
     }
-    if (scene.loot.items.length > scene.ui.visibleLootSize) {
-        let x = scene.ui.lootOrigin.x + (scene.ui.boxSize * scene.ui.visibleLootSize) + 8;
+    // --- Plus
+    // --- --- Right
+    if (scene.loot.items.length - scene.ui.lootScroll > scene.ui.lootVisibleSize) {
+        let x = scene.ui.lootOrigin.x + (scene.ui.boxSize * scene.ui.lootVisibleSize) + 8;
         let y = scene.ui.lootOrigin.y + 8;
-        renderText(ctx, '+', x, y + FONT_SIZE, BLACK, 32);
+        renderText(ctx, '>', x, y + FONT_SIZE, BLACK, 32);
+    }
+    // --- --- Left
+    if (scene.ui.lootScroll > 0) {
+        let x = scene.ui.lootOrigin.x - 24;
+        let y = scene.ui.lootOrigin.y + 8;
+        renderText(ctx, '<', x, y + FONT_SIZE, BLACK, 32);
     }
     // Equipment
     let x = 20;
@@ -54,14 +64,15 @@ function renderUI(ctx, scene) {
         renderText(ctx, tooltipItem.$displayName, x, y += FONT_SIZE);
         renderText(ctx, `ID: ${tooltipItem.id}`, x, tooltipBox.origin.y + tooltipBox.size.y - FONT_SIZE);
         if ('getSurvivability' in tooltipItem) {
-            renderText(ctx, `Survivability: ${floatToPercentageString(tooltipItem.getSurvivability(scene.character))}`, x, y += FONT_SIZE);
+            const survivabilityText = tooltipItem.getSurvivability(scene.character);
+            renderText(ctx, `Survivability: ${floatPercentageFormatted(survivabilityText)}`, x, y += FONT_SIZE);
         }
         if ('rarity' in tooltipItem) {
             const rarity = tooltipItem.rarity;
-            renderText(ctx, `Quality: ${floatToPercentageString(rarity.percentile)}`, x, y += FONT_SIZE);
+            renderText(ctx, `Quality: ${floatPercentageFormatted(rarity.percentile)}`, x, y += FONT_SIZE);
             renderText(ctx, 'Mods:', x, y += FONT_SIZE);
             for (const mod of rarity.mods) {
-                renderText(ctx, `Quality: ${mod}`, x, y += FONT_SIZE);
+                renderText(ctx, `Mod!: ${mod}`, x, y += FONT_SIZE);
             }
         }
     }
@@ -107,6 +118,9 @@ function renderItem(ctx, box, item) {
         renderText(ctx, item.$displayName, box.origin.x + 4, box.origin.y + FONT_SIZE);
         if ('quantity' in item) {
             renderText(ctx, `${item.quantity}`, box.origin.x + 4, box.origin.y + (FONT_SIZE * 2));
+        }
+        if ('rarity' in item) {
+            renderRect(ctx, null, item.rarity.getColor(), box.origin.x + 2, box.origin.y + 2, box.size.x - 4, box.size.y - 4);
         }
         // renderText(ctx, item.id.toString(), box.origin.x + 44, box.origin.y + (FONT_SIZE * 2)); // debug, ID
     }

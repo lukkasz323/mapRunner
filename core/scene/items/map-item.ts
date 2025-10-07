@@ -2,7 +2,6 @@
 import { Item } from './item.js';
 import { Rarity, IRarity } from './components/rarity.js';
 import { Character } from '../character.js';
-import { clamp } from '../../../utils/utils.js';
 
 export class MapItem extends Item implements IRarity {
     $displayName = 'Map';
@@ -13,7 +12,8 @@ export class MapItem extends Item implements IRarity {
     }
 
     getSurvivability(character: Character): number {
-        const x = 0.01 * character.str
-        return clamp(x, 0, 1) 
+        const strFactor = 1 + (0.01 * character.str);
+        const formula = 1 * strFactor;
+        return formula; // No clamp for now - clamp(formula, 0, 1)
     }
 }

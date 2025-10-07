@@ -1,3 +1,4 @@
+import { clamp } from '../utils/utils.js';
 import { isRectCollidingWithPoint } from './collision.js';
 import { MapItem } from './scene/items/map-item.js';
 export function updateGame(scene, input, deltaTime) {
@@ -79,6 +80,16 @@ export function updateGame(scene, input, deltaTime) {
         }
         input.singleClickLock = true;
     }
+    // --- Scroll
+    if (input.isWheelUp() || input.isWheelDown()) {
+        if (input.isWheelUp()) {
+            scene.ui.lootScroll++;
+        }
+        else if (input.isWheelDown()) {
+            scene.ui.lootScroll--;
+        }
+        scene.ui.lootScroll = clamp(scene.ui.lootScroll, 0, Math.max(0, scene.loot.items.length - scene.ui.lootVisibleSize));
+    }
     // Map run 
     if (scene.isMapActive) {
         scene.mapProgress += scene.mapSpeed;
@@ -92,6 +103,8 @@ export function updateGame(scene, input, deltaTime) {
             scene.character.tryLootItem(scene.loot, xpIndex);
         }
     }
+    // Frame input - reset
+    input.wheelDeltaY = 0;
     // Must be last!
     scene.ticks++;
     if (loop) {

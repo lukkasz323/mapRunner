@@ -4,7 +4,7 @@ export function clamp(value: number, min: number, max: number): number {
     return Math.min(Math.max(value, min), max);
 }
 
-export function asPercentage(value: number, decimals: number = 0): string {
+export function floatPercentageFormatted(value: number, decimals: number = 0): string {
     return `${(value * 100).toFixed(decimals)}%`;
 }
 

@@ -7,6 +7,9 @@ export class Input {
     isMouseDownLeft = false;
     isMouseDownRight = false;
     singleClickLock = false;
+    wheelDeltaY = 0;
+    isWheelUp = () => this.wheelDeltaY < 0;
+    isWheelDown = () => this.wheelDeltaY > 0;
     constructor(canvas) {
         this.canvas = canvas;
         this.mouseOrigin = { x: this.canvas.width / 2, y: this.canvas.height / 2 };
@@ -19,6 +22,7 @@ export class Input {
         document.addEventListener('keydown', (event) => this.#onKeyDown(event));
         document.addEventListener('keyup', (event) => this.#onKeyUp(event));
         this.canvas.addEventListener('contextmenu', (event) => this.#onContextMenu(event));
+        this.canvas.addEventListener('wheel', (event) => this.#onWheel(event));
     }
     #onMouseMove(e) {
         const canvasBoundingClientRect = this.canvas.getBoundingClientRect();
@@ -51,5 +55,8 @@ export class Input {
     }
     #onContextMenu(e) {
         e.preventDefault();
+    }
+    #onWheel(e) {
+        this.wheelDeltaY = e.deltaY;
     }
 }

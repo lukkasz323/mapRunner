@@ -10,6 +10,17 @@ import { Chainmail } from "./scene/items/chainmail.js";
 import { Helmet } from "./scene/items/helmet.js";
 import { Boots } from "./scene/items/boots.js";
 import { Gloves } from "./scene/items/gloves.js";
+import { Mod } from "./scene/items/mod.js";
+
+export function rollMods(): Mod[] {
+    const mods: Mod[] = [];
+
+    while (Math.random() <= 0.2) {
+        mods.push(new Mod());
+    }
+    
+    return mods;
+}
 
 export function rollItem(): Item {
     const r = Math.random();

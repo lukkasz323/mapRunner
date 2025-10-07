@@ -8,7 +8,9 @@ export class UI {
     boxSize = 64;
     invOrigin: Vector2 = { x: 300, y: 208 };
     lootOrigin: Vector2 = { x: 280, y: 108 };
-    visibleLootSize = 8;
+    loot: Box[] = [];
+    lootScroll = 0;
+    lootVisibleSize = 8;
     runMapButton: Box = new Box({ x: 350, y: 64 }, { x: 88, y: 24 }, 'Pause Map');
     tooltipBox: Box = new Box({ x: 30, y: 550 }, { x: 240, y: 260 }, 'Tooltip:');
     tooltipItem: Item|null = null;
@@ -16,7 +18,6 @@ export class UI {
     items: Box[] = [];
     inventory: Box[] = [];
     equipment: Map<EquipmentSlot, Box> = new Map();
-    loot: Box[] = [];
 
     constructor(scene: Scene) {
         this.generic.push(this.runMapButton);
@@ -51,7 +52,7 @@ export class UI {
         }
         
         // Loot
-        for (let x = 0; x < this.visibleLootSize; x++) {
+        for (let x = 0; x < this.lootVisibleSize; x++) {
             const box = new Box({ x: this.lootOrigin.x + (x * this.boxSize), y: this.lootOrigin.y }, { x: this.boxSize, y: this.boxSize });
             this.generic.push(box);
             this.loot.push(box);
