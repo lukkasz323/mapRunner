@@ -30,7 +30,7 @@ export function updateGame(scene, input, deltaTime) {
     for (let i = 0; i < scene.ui.loot.length; i++) {
         const box = scene.ui.loot[i];
         if (isRectCollidingWithPoint(box, input.mouseOrigin)) {
-            const item = scene.loot.items[i];
+            const item = scene.loot.items[i + scene.ui.lootScroll];
             tooltipItem = item;
             break;
         }

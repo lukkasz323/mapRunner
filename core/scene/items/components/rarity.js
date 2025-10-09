@@ -7,19 +7,21 @@ export class Rarity {
         this.percentile = percentile;
     }
     getColor() {
-        switch (this.mods.length) {
-            default:
-                return 'blue';
-            case 1:
-                return 'red';
-            case 2:
-                return 'blue';
-            case 3:
-                return 'purple';
-            case 4:
-                return 'orange';
-            case 5:
-                return 'red';
-        }
+        const modCount = this.mods.length;
+        if (modCount > 6)
+            return 'indigo';
+        if (modCount === 6)
+            return 'magenta';
+        if (modCount === 5)
+            return 'orangeRed';
+        if (modCount === 4)
+            return 'gold';
+        if (modCount === 3)
+            return 'lime';
+        if (modCount === 2)
+            return 'cyan';
+        if (modCount === 1)
+            return 'blue';
+        return 'gray';
     }
 }

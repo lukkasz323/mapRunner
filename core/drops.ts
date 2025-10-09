@@ -15,7 +15,7 @@ import { Mod } from "./scene/items/mod.js";
 export function rollMods(): Mod[] {
     const mods: Mod[] = [];
 
-    while (Math.random() <= 0.2) {
+    while (Math.random() <= 0.1) {
         mods.push(new Mod());
     }
     

@@ -94,7 +94,7 @@ function renderUI(ctx: CanvasRenderingContext2D, scene: Scene) {
         if ('rarity' in tooltipItem) {
             const rarity: Rarity = (tooltipItem as IRarity).rarity;
             renderText(ctx, `Quality: ${floatPercentageFormatted(rarity.percentile)}`, x, y += FONT_SIZE);
-            renderText(ctx, 'Mods:', x, y += FONT_SIZE);
+            renderText(ctx, `Mods (${rarity.mods.length}):`, x, y += FONT_SIZE);
             for (const mod of rarity.mods) {
                 renderText(ctx, `Mod!: ${mod}`, x, y += FONT_SIZE);
             }
@@ -157,11 +157,7 @@ function renderItem(ctx: CanvasRenderingContext2D, box: Box, item: Item) {
         if ('rarity' in item) {
             const color = (item as IRarity).rarity.getColor()
             if (color !== 'gray') {
-                let lineWidth = 2;
-                if (color === 'blue') {
-                    lineWidth = 2;
-                }
-                renderRect(ctx, null, color, box.origin.x + 2, box.origin.y + 2, box.size.x - 4, box.size.y - 4, lineWidth);
+                renderRect(ctx, null, color, box.origin.x + 2, box.origin.y + 2, box.size.x - 4, box.size.y - 4);
             }
         }
 

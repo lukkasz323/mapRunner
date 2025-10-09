@@ -11,7 +11,7 @@ import { Gloves } from "./scene/items/gloves.js";
 import { Mod } from "./scene/items/mod.js";
 export function rollMods() {
     const mods = [];
-    while (Math.random() <= 0.2) {
+    while (Math.random() <= 0.1) {
         mods.push(new Mod());
     }
     return mods;
