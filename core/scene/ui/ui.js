@@ -26,18 +26,21 @@ export class UI {
             }
         }
         // Equipment
-        let x = 20;
-        let y = 180;
-        this.equipment.set('Helmet', new Box({ x: x += 96, y: y += 20 }, { x: 64, y: 64 })); // Helmet
-        this.equipment.set('Amulet', new Box({ x: x + 80, y: y + 16 }, { x: 32, y: 32 })); // Amulet
-        this.equipment.set('BodyArmor', new Box({ x: x, y: y += 96 }, { x: 64, y: 128 })); // Body armor
-        this.equipment.set('MainHand', new Box({ x: x - 96, y: y - 32 }, { x: 64, y: 128 })); // Main Hand
-        this.equipment.set('OffHand', new Box({ x: x + 96, y: y - 32 }, { x: 64, y: 128 })); // Off Hand
-        this.equipment.set('Belt', new Box({ x: x, y: y += 160 }, { x: 64, y: 32 })); // Belt
-        this.equipment.set('Gloves', new Box({ x: x - 96, y: y }, { x: 64, y: 64 })); // Gloves
-        this.equipment.set('Boots', new Box({ x: x + 96, y: y }, { x: 64, y: 64 })); // Boots
-        this.equipment.set('LeftRing', new Box({ x: x - 48, y: y - 48 }, { x: 32, y: 32 })); // Left Ring
-        this.equipment.set('RightRing', new Box({ x: x + 80, y: y - 48 }, { x: 32, y: 32 })); // Right Ring
+        let x = 0;
+        let y = 0;
+        this.equipment.set('Map', new Box({ x: x + 256, y: y + 40 }, { x: 48, y: 48 }));
+        x = 20;
+        y = 180;
+        this.equipment.set('Helmet', new Box({ x: x += 96, y: y += 20 }, { x: 64, y: 64 }));
+        this.equipment.set('Amulet', new Box({ x: x + 80, y: y + 16 }, { x: 32, y: 32 }));
+        this.equipment.set('BodyArmor', new Box({ x: x, y: y += 96 }, { x: 64, y: 128 }));
+        this.equipment.set('MainHand', new Box({ x: x - 96, y: y - 32 }, { x: 64, y: 128 }));
+        this.equipment.set('OffHand', new Box({ x: x + 96, y: y - 32 }, { x: 64, y: 128 }));
+        this.equipment.set('Belt', new Box({ x: x, y: y += 160 }, { x: 64, y: 32 }));
+        this.equipment.set('Gloves', new Box({ x: x - 96, y: y }, { x: 64, y: 64 }));
+        this.equipment.set('Boots', new Box({ x: x + 96, y: y }, { x: 64, y: 64 }));
+        this.equipment.set('LeftRing', new Box({ x: x - 48, y: y - 48 }, { x: 32, y: 32 }));
+        this.equipment.set('RightRing', new Box({ x: x + 80, y: y - 48 }, { x: 32, y: 32 }));
         for (const eqBox of this.equipment.values()) {
             this.generic.push(eqBox);
             this.items.push(eqBox);

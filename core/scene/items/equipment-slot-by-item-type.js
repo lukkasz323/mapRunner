@@ -8,4 +8,5 @@ export const EquipmentSlotByItemType = new Map([
     ['Belt', 'Belt'],
     ['Amulet', 'Amulet'],
     ['Ring', 'LeftRing'],
+    ['Map', 'Map'],
 ]);

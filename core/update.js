@@ -67,7 +67,7 @@ export function updateGame(scene, input, deltaTime) {
             for (let i = 0; i < scene.ui.inventory.length; i++) {
                 const bagItemBox = scene.ui.inventory[i];
                 if (isRectCollidingWithPoint(bagItemBox, input.mouseOrigin)) {
-                    scene.character.swapEquipment(i);
+                    scene.character.trySwapEquipment(i);
                 }
             }
             // --- Uneqip

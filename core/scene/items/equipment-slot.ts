@@ -8,4 +8,5 @@ export type EquipmentSlot =
     | 'Belt'
     | 'Amulet'
     | 'LeftRing'
-    | 'RightRing';
+    | 'RightRing'
+    | 'Map';

@@ -11,4 +11,5 @@ export const EquipmentSlotByItemType: ReadonlyMap<ItemType, EquipmentSlot> = new
     ['Belt', 'Belt'],
     ['Amulet', 'Amulet'],
     ['Ring', 'LeftRing'],
+    ['Map', 'Map'],
 ]);

@@ -1,4 +1,5 @@
 export type ItemType =
+    | 'Generic'
     | 'MainHand'
     | 'OffHand'
     | 'BodyArmor'
@@ -11,4 +12,4 @@ export type ItemType =
     | 'Gold'
     | 'Xp'
     | 'Consumable'
-    | 'Generic';
+    | 'Map';

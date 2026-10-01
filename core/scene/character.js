@@ -35,7 +35,8 @@ export class Character {
         }
         return false; // Bag full
     }
-    swapEquipment(bagItemIndex) {
+    trySwapEquipment(bagItemIndex) {
+        debugger;
         const bagItem = this.bag.items[bagItemIndex];
         if (bagItem) {
             let slot;
